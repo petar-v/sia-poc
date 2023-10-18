@@ -1,12 +1,13 @@
 import Header from "./components/header";
-import App from "../sia/sia";
+import App from "../sia/App";
 
 export default function Home() {
+  const apiKey = process.env.CHATGPT_API_KEY || "";
   return (
     <>
       <Header />
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <App></App>
+        <App ApiKey={apiKey}></App>
       </main>
     </>
   );

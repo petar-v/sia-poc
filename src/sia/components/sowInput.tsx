@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { Button, Input } from "antd";
 
-export default function SoWInput() {
+export type SoWInputProps = {
+  onSubmit: (sow: string) => void;
+};
+
+export default function SoWInput({ onSubmit }: SoWInputProps) {
   const [value, setValue] = useState("");
   const submitSoW = () => {
-    console.log("SOW", value);
+    // TODO: Add validation
+    onSubmit(value);
   };
 
   return (
