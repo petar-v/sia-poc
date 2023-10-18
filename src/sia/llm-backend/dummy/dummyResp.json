@@ -1,0 +1,45 @@
+{
+  "tasks": [
+    {
+      "title": "Project Initiation",
+      "description": "Kickstart the project, define objectives, and allocate resources.",
+      "timeEst": 5
+    },
+    {
+      "title": "Requirements Gathering and Analysis",
+      "description": "Collect and analyze requirements for the mobile calculator app.",
+      "timeEst": 10
+    },
+    {
+      "title": "Android App Development",
+      "description": "Develop the Android version of the Calculator+ app.",
+      "timeEst": 30
+    },
+    {
+      "title": "iOS App Development",
+      "description": "Develop the iOS version of the Calculator+ app.",
+      "timeEst": 30
+    },
+    {
+      "title": "Testing and Quality Assurance",
+      "description": "Thoroughly test the app, including unit, integration, and user acceptance testing.",
+      "timeEst": 20
+    },
+    {
+      "title": "User Documentation",
+      "description": "Create user documentation and help files for the app.",
+      "timeEst": 10
+    },
+    {
+      "title": "App Deployment",
+      "description": "Prepare the app for deployment on Android and iOS platforms.",
+      "timeEst": 10
+    },
+    {
+      "title": "Project Closure and Reporting",
+      "description": "Wrap up the project and create closure reports.",
+      "timeEst": 5
+    }
+  ],
+  "timeEst": 110
+}
