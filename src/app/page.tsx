@@ -1,13 +1,14 @@
 import Header from "./components/header";
-import App from "../sia/sia";
+import App from "../sia/App";
 
 export default function Home() {
-  return (
-    <>
-      <Header />
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <App></App>
-      </main>
-    </>
-  );
+    const apiKey = process.env.OPENAI_API_KEY || "";
+    return (
+        <>
+            <Header />
+            <main className="flex min-h-screen flex-col items-center justify-between p-24">
+                <App ApiKey={apiKey}></App>
+            </main>
+        </>
+    );
 }

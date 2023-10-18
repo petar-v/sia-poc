@@ -15,9 +15,15 @@
 # production
 /build
 
+# profile data
+*.cpuprofile
+
 # misc
 .DS_Store
 *.pem
+
+# local env variables
+.env.local
 
 # debug
 npm-debug.log*
