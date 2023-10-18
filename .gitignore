@@ -15,6 +15,9 @@
 # production
 /build
 
+# profile data
+*.cpuprofile
+
 # misc
 .DS_Store
 *.pem
