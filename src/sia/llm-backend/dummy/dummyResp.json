@@ -2,46 +2,54 @@
     "tasks": [
         {
             "title": "Project Initiation",
-            "description": "Initiate the project and set up project management tools",
-            "timeEst": 2
+            "description": "Initiate the project and set up necessary infrastructure",
+            "timeEst": 5,
+            "detailedTask": "1. Set up project repository\n2. Set up development environment\n3. Define project roles and responsibilities\n4. Schedule project meetings\n5. Assign tasks to team members"
         },
         {
             "title": "Requirements Gathering and Analysis",
-            "description": "Gather and analyze project requirements",
-            "timeEst": 5
+            "description": "Gather and analyze requirements for the calculator app",
+            "timeEst": 10,
+            "detailedTask": "1. Meet with stakeholders to gather requirements\n2. Create user stories and use cases\n3. Analyze requirements and prioritize features\n4. Create requirement documentation\n5. Review and finalize requirements with stakeholders"
         },
         {
             "title": "Android App Development",
-            "description": "Develop the Android version of the Calculator+ application",
-            "timeEst": 20
+            "description": "Develop the Calculator+ app for Android platform",
+            "timeEst": 20,
+            "detailedTask": "1. Set up Android development environment\n2. Design app UI\n3. Implement basic arithmetic operations\n4. Implement scientific functions\n5. Test and debug the app\n6. Optimize app performance\n7. Conduct user acceptance testing\n8. Fix any reported issues\n9. Finalize Android app"
         },
         {
             "title": "iOS App Development",
-            "description": "Develop the iOS version of the Calculator+ application",
-            "timeEst": 20
+            "description": "Develop the Calculator+ app for iOS platform",
+            "timeEst": 20,
+            "detailedTask": "1. Set up iOS development environment\n2. Design app UI\n3. Implement basic arithmetic operations\n4. Implement scientific functions\n5. Test and debug the app\n6. Optimize app performance\n7. Conduct user acceptance testing\n8. Fix any reported issues\n9. Finalize iOS app"
         },
         {
             "title": "Testing and Quality Assurance",
-            "description": "Perform testing and quality assurance activities",
-            "timeEst": 15
+            "description": "Perform testing and quality assurance activities for both Android and iOS apps",
+            "timeEst": 15,
+            "detailedTask": "1. Develop test cases\n2. Perform unit testing\n3. Conduct integration testing\n4. Perform user acceptance testing\n5. Identify and report any issues\n6. Collaborate with development team to fix issues\n7. Retest fixed issues\n8. Generate quality assurance reports"
         },
         {
             "title": "User Documentation",
-            "description": "Create user documentation and help files",
-            "timeEst": 5
+            "description": "Create documentation and help files for the Calculator+ app",
+            "timeEst": 10,
+            "detailedTask": "1. Create user guides\n2. Write help files\n3. Document app features and functions\n4. Review and finalize documentation\n5. Prepare documentation for distribution"
         },
         {
             "title": "App Deployment",
-            "description": "Deploy the Calculator+ application on Android and iOS platforms",
-            "timeEst": 5
+            "description": "Deploy the Calculator+ app to app stores",
+            "timeEst": 5,
+            "detailedTask": "1. Prepare app for deployment\n2. Submit app to Android app store\n3. Submit app to iOS app store\n4. Handle any required updates and revisions"
         },
         {
             "title": "Project Closure and Reporting",
-            "description": "Wrap up the project and create project closure report",
-            "timeEst": 3
+            "description": "Conclude the project and create project closure report",
+            "timeEst": 5,
+            "detailedTask": "1. Review project deliverables\n2. Close project contracts\n3. Conduct project retrospective\n4. Create project closure report\n5. Present project closure report to stakeholders"
         }
     ],
-    "timeEst": 75,
+    "timeEst": 90,
     "totalCost": 50000,
     "numberOfEngineers": 4
 }

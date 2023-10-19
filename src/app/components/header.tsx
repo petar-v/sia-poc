@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Home() {
+export default function Header({ children }) {
     return (
         <nav className="navbar navbar-light bg-light px-5">
             <a className="navbar-brand" href="/">
@@ -13,6 +13,7 @@ export default function Home() {
                 />
                 Software Implementation Assistant
             </a>
+            <div>{children}</div>
         </nav>
     );
 }

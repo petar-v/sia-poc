@@ -2,6 +2,7 @@ type Task = {
     title: string;
     description: string;
     timeEst: number;
+    detailedTask: string;
 };
 
 type ProjectData = {

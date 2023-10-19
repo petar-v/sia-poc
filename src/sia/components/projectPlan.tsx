@@ -36,7 +36,7 @@ export default function ProjectPlan({ data }: ProjectPlanProps) {
             <Descriptions title="Project Details" items={items} />
             <Space className="flex flex-wrap">
                 {data.tasks.map((task, i) => (
-                    <>
+                    <div key={`taskC-${i}`}>
                         <Card
                             hoverable
                             key={`task-${i}`}
@@ -48,15 +48,18 @@ export default function ProjectPlan({ data }: ProjectPlanProps) {
                             <p>{task.description}</p>
                         </Card>
                         <Modal
+                            key={`modal-${i}`}
                             title={task.title}
                             footer={null}
                             open={taskOpen === i}
                             onOk={modalHandleClose}
                             onCancel={modalHandleClose}
                         >
-                            <p>{task.description}</p>
+                            {task.detailedTask.split("\n").map((p, i) => (
+                                <p key={`p-${i}`}>{p}</p>
+                            ))}
                         </Modal>
-                    </>
+                    </div>
                 ))}
             </Space>
         </>

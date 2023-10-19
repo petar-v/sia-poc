@@ -17,20 +17,19 @@ import ProjectData from "./projectData";
 
 export type AppProps = {
     ApiKey: string;
+    backend: "chatgpt" | "dummy";
 };
 
-const USE_DUMMY = true;
-
-export default function App({ ApiKey }: AppProps) {
+export default function App({ ApiKey, backend }: AppProps) {
     const [sow, setSow] = useState("");
     const [resp, setResp] = useState<ProjectData | null>(null);
 
     const submitPrompt = useCallback(
         async (sow: string): Promise<ProjectData | null> => {
-            if (USE_DUMMY) return await promptDummy(sow);
-            else return await prompt(ApiKey, sow);
+            if (backend === "chatgpt") return await prompt(ApiKey, sow);
+            else return await promptDummy(sow);
         },
-        [ApiKey],
+        [ApiKey, backend],
     );
 
     const onSubmit = (sow: string) => {
@@ -52,7 +51,7 @@ export default function App({ ApiKey }: AppProps) {
         if (sow) {
             return (
                 <>
-                    <Spin tip="Processing" size="large"></Spin>
+                    <Spin size="large"></Spin>
                     <span>Processing</span>
                 </>
             );
