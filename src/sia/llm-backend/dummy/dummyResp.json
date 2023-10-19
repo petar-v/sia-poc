@@ -1,45 +1,47 @@
 {
-  "tasks": [
-    {
-      "title": "Project Initiation",
-      "description": "Kickstart the project, define objectives, and allocate resources.",
-      "timeEst": 5
-    },
-    {
-      "title": "Requirements Gathering and Analysis",
-      "description": "Collect and analyze requirements for the mobile calculator app.",
-      "timeEst": 10
-    },
-    {
-      "title": "Android App Development",
-      "description": "Develop the Android version of the Calculator+ app.",
-      "timeEst": 30
-    },
-    {
-      "title": "iOS App Development",
-      "description": "Develop the iOS version of the Calculator+ app.",
-      "timeEst": 30
-    },
-    {
-      "title": "Testing and Quality Assurance",
-      "description": "Thoroughly test the app, including unit, integration, and user acceptance testing.",
-      "timeEst": 20
-    },
-    {
-      "title": "User Documentation",
-      "description": "Create user documentation and help files for the app.",
-      "timeEst": 10
-    },
-    {
-      "title": "App Deployment",
-      "description": "Prepare the app for deployment on Android and iOS platforms.",
-      "timeEst": 10
-    },
-    {
-      "title": "Project Closure and Reporting",
-      "description": "Wrap up the project and create closure reports.",
-      "timeEst": 5
-    }
-  ],
-  "timeEst": 110
+    "tasks": [
+        {
+            "title": "Project Initiation",
+            "description": "Initiate the project and set up project management tools",
+            "timeEst": 2
+        },
+        {
+            "title": "Requirements Gathering and Analysis",
+            "description": "Gather and analyze project requirements",
+            "timeEst": 5
+        },
+        {
+            "title": "Android App Development",
+            "description": "Develop the Android version of the Calculator+ application",
+            "timeEst": 20
+        },
+        {
+            "title": "iOS App Development",
+            "description": "Develop the iOS version of the Calculator+ application",
+            "timeEst": 20
+        },
+        {
+            "title": "Testing and Quality Assurance",
+            "description": "Perform testing and quality assurance activities",
+            "timeEst": 15
+        },
+        {
+            "title": "User Documentation",
+            "description": "Create user documentation and help files",
+            "timeEst": 5
+        },
+        {
+            "title": "App Deployment",
+            "description": "Deploy the Calculator+ application on Android and iOS platforms",
+            "timeEst": 5
+        },
+        {
+            "title": "Project Closure and Reporting",
+            "description": "Wrap up the project and create project closure report",
+            "timeEst": 3
+        }
+    ],
+    "timeEst": 75,
+    "totalCost": 50000,
+    "numberOfEngineers": 4
 }

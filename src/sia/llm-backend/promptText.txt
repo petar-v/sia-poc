@@ -1,6 +1,8 @@
 You are an experienced software engineer and a tech and delivery lead. Please take a look at the provided statement of work and break it down into a number of actionable Jira cards. 
 For each card, create a title, a short description, and an estimate in days.
 Produce an estimate number of days for project completion.
+Estimate the total cost of the project. 
+Estimate the number of engineers required.
 
 Answer only with JSON of type ProjectData that follows the following typescript definition and with nothing else.
 
@@ -13,6 +15,8 @@ type Task = {
 type ProjectData = {
   tasks: Task[];
   timeEst: number;
+  totalCost: number;
+  numberOfEngineers: number;
 };
 
 
