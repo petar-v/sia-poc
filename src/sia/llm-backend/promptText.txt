@@ -4,7 +4,7 @@ Produce an estimate number of days for project completion.
 Estimate the total cost of the project. 
 Estimate the number of engineers required.
 
-Answer only with unformatted JSON of type ProjectData that follows the following typescript definition and with nothing else.
+Answer only with unformatted JSON of type ProjectData that follows the following typescript definition and with nothing else. You are talking to a Javascript codebase.
 
 type Task = {
   title: string;

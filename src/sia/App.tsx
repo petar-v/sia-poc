@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useCallback } from "react";
 
-import { Spin, Steps } from "antd";
+import { Spin, Steps, Card } from "antd";
 import {
     LoadingOutlined,
     SmileOutlined,
@@ -19,6 +19,8 @@ export type AppProps = {
     ApiKey: string;
     backend: "chatgpt" | "dummy";
 };
+
+const DUMMY_CARDS = 7;
 
 export default function App({ ApiKey, backend }: AppProps) {
     const [sow, setSow] = useState("");
@@ -52,6 +54,20 @@ export default function App({ ApiKey, backend }: AppProps) {
         if (sow) {
             return (
                 <>
+                    <div className="flex flex-wrap">
+                        {[...Array(DUMMY_CARDS).keys()].map((i) => (
+                            <Card
+                                key={`dummy-${i}`}
+                                style={{ width: 300 }}
+                                loading={true}
+                            >
+                                <Card.Meta
+                                    title="Card title"
+                                    description="This is the description"
+                                />
+                            </Card>
+                        ))}
+                    </div>
                     <Spin size="large"></Spin>
                     <span>Processing</span>
                 </>
