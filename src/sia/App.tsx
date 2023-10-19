@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useCallback } from "react";
 
+import { Spin } from "antd";
+
 import SoWInput from "./components/sowInput";
 import ProjectPlan from "./components/projectPlan";
 
@@ -41,7 +43,12 @@ export default function App({ ApiKey }: AppProps) {
     }
 
     if (sow) {
-        return <>Processing...</>;
+        return (
+            <>
+                <Spin tip="Processing" size="large"></Spin>
+                <span>Processing</span>
+            </>
+        );
     }
 
     return (
