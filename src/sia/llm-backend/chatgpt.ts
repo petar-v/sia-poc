@@ -34,5 +34,5 @@ export const promptDummy = async (
     prompt: string,
 ): Promise<ProjectData | null> => {
     console.log("Dummy prompt", promptTxt + prompt);
-    return dummyResp;
+    return new Promise((resolve) => setTimeout(() => resolve(dummyResp), 2000));
 };

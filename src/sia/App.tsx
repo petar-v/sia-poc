@@ -1,7 +1,13 @@
 "use client";
 import React, { useState, useCallback } from "react";
 
-import { Spin } from "antd";
+import { Spin, Steps } from "antd";
+import {
+    LoadingOutlined,
+    SmileOutlined,
+    SolutionOutlined,
+    RobotOutlined,
+} from "@ant-design/icons";
 
 import SoWInput from "./components/sowInput";
 import ProjectPlan from "./components/projectPlan";
@@ -38,22 +44,63 @@ export default function App({ ApiKey }: AppProps) {
         });
     };
 
-    if (resp) {
-        return <ProjectPlan data={resp} />;
-    }
+    const view = () => {
+        if (resp) {
+            return <ProjectPlan data={resp} />;
+        }
 
-    if (sow) {
+        if (sow) {
+            return (
+                <>
+                    <Spin tip="Processing" size="large"></Spin>
+                    <span>Processing</span>
+                </>
+            );
+        }
+
         return (
             <>
-                <Spin tip="Processing" size="large"></Spin>
-                <span>Processing</span>
+                <SoWInput onSubmit={onSubmit} />
             </>
         );
-    }
+    };
 
     return (
         <>
-            <SoWInput onSubmit={onSubmit} />
+            <Steps
+                className="mb-5"
+                items={[
+                    {
+                        title: "Statement of Work",
+                        status: !resp && !sow ? "process" : "finish",
+                        icon: <SolutionOutlined />,
+                    },
+                    {
+                        title: "Processing",
+                        status: (() => {
+                            if (resp) {
+                                return "finish";
+                            }
+                            if (sow) {
+                                return "process";
+                            }
+                            return "wait";
+                        })(),
+                        icon:
+                            !resp && sow ? (
+                                <LoadingOutlined />
+                            ) : (
+                                <RobotOutlined />
+                            ),
+                    },
+                    {
+                        title: "Project plan",
+                        status: resp && sow ? "finish" : "wait",
+                        icon: <SmileOutlined />,
+                    },
+                ]}
+            />
+            {view()}
         </>
     );
 }

@@ -13,12 +13,12 @@ export default function ProjectPlan({ data }: ProjectPlanProps) {
         {
             key: "1",
             label: "Total Time Estimate",
-            children: data.timeEst,
+            children: data.timeEst + " days",
         },
         {
             key: "2",
             label: "Cost estimate",
-            children: data.totalCost,
+            children: data.totalCost + "GBP",
         },
         {
             key: "3",
@@ -28,8 +28,6 @@ export default function ProjectPlan({ data }: ProjectPlanProps) {
     ];
     return (
         <>
-            <h2>Project Plan</h2>
-            <h5>Estimate: {data.timeEst} days</h5>
             <Descriptions title="Project Details" items={items} />;
             <Space className="flex flex-wrap">
                 {data.tasks.map((task, i) => (
