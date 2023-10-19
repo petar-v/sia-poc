@@ -10,6 +10,7 @@ type ProjectData = {
     timeEst: number;
     totalCost: number;
     numberOfEngineers: number;
+    risks: string;
 };
 
 export default ProjectData;

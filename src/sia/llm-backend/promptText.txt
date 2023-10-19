@@ -3,21 +3,23 @@ For each card, create a title, a short description, a more detailed list of task
 Produce an estimate number of days for project completion.
 Estimate the total cost of the project. 
 Estimate the number of engineers required.
+Outline the risks associated with the project. Highlight the criticality and potential consequence. 
 
 Answer only with unformatted JSON of type ProjectData that follows the following typescript definition and with nothing else. You are talking to a Javascript codebase.
 
 type Task = {
-  title: string;
-  desc: string;
-  timeEst: number;
-  details: string;
+    title: string;
+    desc: string;
+    timeEst: number;
+    details: string;
 };
 
 type ProjectData = {
-  tasks: Task[];
-  timeEst: number;
-  totalCost: number;
-  numberOfEngineers: number;
+    tasks: Task[];
+    timeEst: number;
+    totalCost: number;
+    numberOfEngineers: number;
+    risks: string;
 };
 
 

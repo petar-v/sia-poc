@@ -27,6 +27,11 @@ export default function ProjectPlan({ data }: ProjectPlanProps) {
             label: "Number of Engineres required",
             children: data.numberOfEngineers,
         },
+        {
+            key: "4",
+            label: "Risks",
+            children: data.risks,
+        },
     ];
     const modalHandleClose = () => {
         setTaskOpen(-1);
