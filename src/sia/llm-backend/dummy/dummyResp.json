@@ -1,55 +1,55 @@
 {
     "tasks": [
         {
-            "title": "Project Initiation",
-            "description": "Initiate the project and set up necessary infrastructure",
+            "title": "Task 1: Project Initiation",
+            "desc": "Initiate the project and establish the project team",
+            "timeEst": 3,
+            "details": "1. Create project plan\n2. Define project objectives and goals\n3. Allocate project team members"
+        },
+        {
+            "title": "Task 2: Requirements Gathering and Analysis",
+            "desc": "Gather and analyze the requirements for the calculator app",
             "timeEst": 5,
-            "detailedTask": "1. Set up project repository\n2. Set up development environment\n3. Define project roles and responsibilities\n4. Schedule project meetings\n5. Assign tasks to team members"
+            "details": "1. Conduct meetings with stakeholders\n2. Identify functional and non-functional requirements\n3. Document the requirements"
         },
         {
-            "title": "Requirements Gathering and Analysis",
-            "description": "Gather and analyze requirements for the calculator app",
-            "timeEst": 10,
-            "detailedTask": "1. Meet with stakeholders to gather requirements\n2. Create user stories and use cases\n3. Analyze requirements and prioritize features\n4. Create requirement documentation\n5. Review and finalize requirements with stakeholders"
-        },
-        {
-            "title": "Android App Development",
-            "description": "Develop the Calculator+ app for Android platform",
-            "timeEst": 20,
-            "detailedTask": "1. Set up Android development environment\n2. Design app UI\n3. Implement basic arithmetic operations\n4. Implement scientific functions\n5. Test and debug the app\n6. Optimize app performance\n7. Conduct user acceptance testing\n8. Fix any reported issues\n9. Finalize Android app"
-        },
-        {
-            "title": "iOS App Development",
-            "description": "Develop the Calculator+ app for iOS platform",
-            "timeEst": 20,
-            "detailedTask": "1. Set up iOS development environment\n2. Design app UI\n3. Implement basic arithmetic operations\n4. Implement scientific functions\n5. Test and debug the app\n6. Optimize app performance\n7. Conduct user acceptance testing\n8. Fix any reported issues\n9. Finalize iOS app"
-        },
-        {
-            "title": "Testing and Quality Assurance",
-            "description": "Perform testing and quality assurance activities for both Android and iOS apps",
+            "title": "Task 3: Android App Development",
+            "desc": "Develop the Android version of the calculator app",
             "timeEst": 15,
-            "detailedTask": "1. Develop test cases\n2. Perform unit testing\n3. Conduct integration testing\n4. Perform user acceptance testing\n5. Identify and report any issues\n6. Collaborate with development team to fix issues\n7. Retest fixed issues\n8. Generate quality assurance reports"
+            "details": "1. Create the user interface design\n2. Implement basic arithmetic operations\n3. Implement scientific functions\n4. Test and debug the app"
         },
         {
-            "title": "User Documentation",
-            "description": "Create documentation and help files for the Calculator+ app",
+            "title": "Task 4: iOS App Development",
+            "desc": "Develop the iOS version of the calculator app",
+            "timeEst": 15,
+            "details": "1. Create the user interface design\n2. Implement basic arithmetic operations\n3. Implement scientific functions\n4. Test and debug the app"
+        },
+        {
+            "title": "Task 5: Testing and Quality Assurance",
+            "desc": "Test and ensure the quality of the calculator app",
             "timeEst": 10,
-            "detailedTask": "1. Create user guides\n2. Write help files\n3. Document app features and functions\n4. Review and finalize documentation\n5. Prepare documentation for distribution"
+            "details": "1. Perform unit testing\n2. Conduct integration testing\n3. Execute user acceptance testing\n4. Track and fix any issues"
         },
         {
-            "title": "App Deployment",
-            "description": "Deploy the Calculator+ app to app stores",
+            "title": "Task 6: User Documentation",
+            "desc": "Create user documentation and help files for the app",
             "timeEst": 5,
-            "detailedTask": "1. Prepare app for deployment\n2. Submit app to Android app store\n3. Submit app to iOS app store\n4. Handle any required updates and revisions"
+            "details": "1. Document app features and functionality\n2. Create user guides and tutorials\n3. Review and finalize the documentation"
         },
         {
-            "title": "Project Closure and Reporting",
-            "description": "Conclude the project and create project closure report",
-            "timeEst": 5,
-            "detailedTask": "1. Review project deliverables\n2. Close project contracts\n3. Conduct project retrospective\n4. Create project closure report\n5. Present project closure report to stakeholders"
+            "title": "Task 7: App Deployment",
+            "desc": "Deploy the calculator app to the app stores",
+            "timeEst": 3,
+            "details": "1. Prepare the app for deployment\n2. Submit the app to the app stores\n3. Monitor and track the deployment process"
+        },
+        {
+            "title": "Task 8: Project Closure and Reporting",
+            "desc": "Close the project and prepare final reports",
+            "timeEst": 2,
+            "details": "1. Review project outcomes\n2. Prepare project closure report\n3. Conduct project review meetings"
         }
     ],
-    "timeEst": 90,
+    "timeEst": 58,
     "totalCost": 50000,
     "numberOfEngineers": 4
 }

@@ -2,7 +2,8 @@
 
 import React, { useState } from "react";
 
-import { Select } from "antd";
+import { Select, Button, Space } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
 
 import Header from "./components/header";
 import App from "../sia/App";
@@ -16,17 +17,28 @@ export default function AppWrapper({ ApiKey }: AppWrapperProps) {
     return (
         <>
             <Header>
-                <Select
-                    defaultValue={backend}
-                    options={[
-                        { value: "dummy", label: "Dummy offline data" },
-                        { value: "chatgpt", label: "ChatGPT 3.5 Turbo" },
-                    ]}
-                    onChange={(value) => {
-                        console.log("Backend set to", value);
-                        setBackend(value);
-                    }}
-                />
+                <Space wrap>
+                    <Button
+                        type="dashed"
+                        icon={<ReloadOutlined />}
+                        onClick={() => {
+                            location.reload();
+                        }}
+                    >
+                        Reload
+                    </Button>
+                    <Select
+                        defaultValue={backend}
+                        options={[
+                            { value: "dummy", label: "Dummy offline data" },
+                            { value: "chatgpt", label: "ChatGPT 3.5 Turbo" },
+                        ]}
+                        onChange={(value) => {
+                            console.log("Backend set to", value);
+                            setBackend(value);
+                        }}
+                    />
+                </Space>
             </Header>
             <main className="flex min-h-screen flex-col items-center p-24">
                 <App ApiKey={ApiKey} backend={backend}></App>

@@ -35,6 +35,7 @@ export default function App({ ApiKey, backend }: AppProps) {
     const onSubmit = (sow: string) => {
         console.log(sow);
         setSow(sow);
+        window.scrollTo(0, 0);
         submitPrompt(sow).then((resp) => {
             if (resp) {
                 setResp(resp);

@@ -1,8 +1,8 @@
 type Task = {
     title: string;
-    description: string;
+    desc: string;
     timeEst: number;
-    detailedTask: string;
+    details: string;
 };
 
 type ProjectData = {

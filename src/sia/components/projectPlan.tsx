@@ -45,7 +45,7 @@ export default function ProjectPlan({ data }: ProjectPlanProps) {
                             style={{ width: 300 }}
                             onClick={() => setTaskOpen(i)}
                         >
-                            <p>{task.description}</p>
+                            <p>{task.desc}</p>
                         </Card>
                         <Modal
                             key={`modal-${i}`}
@@ -55,7 +55,7 @@ export default function ProjectPlan({ data }: ProjectPlanProps) {
                             onOk={modalHandleClose}
                             onCancel={modalHandleClose}
                         >
-                            {task.detailedTask.split("\n").map((p, i) => (
+                            {task.details.split("\n").map((p, i) => (
                                 <p key={`p-${i}`}>{p}</p>
                             ))}
                         </Modal>
