@@ -13,7 +13,7 @@ export type AppWrapperProps = {
 };
 
 export default function AppWrapper({ ApiKey }: AppWrapperProps) {
-    const [backend, setBackend] = useState<"dummy" | "chatgpt">("dummy");
+    const [backend, setBackend] = useState<"dummy" | "chatgpt">("chatgpt");
     return (
         <>
             <Header>
@@ -30,8 +30,8 @@ export default function AppWrapper({ ApiKey }: AppWrapperProps) {
                     <Select
                         defaultValue={backend}
                         options={[
-                            { value: "dummy", label: "Dummy offline data" },
                             { value: "chatgpt", label: "ChatGPT 3.5 Turbo" },
+                            { value: "dummy", label: "Dummy offline data" },
                         ]}
                         onChange={(value) => {
                             console.log("Backend set to", value);
@@ -40,7 +40,7 @@ export default function AppWrapper({ ApiKey }: AppWrapperProps) {
                     />
                 </Space>
             </Header>
-            <main className="flex min-h-screen flex-col items-center p-24">
+            <main className="flex flex-col items-center p-20">
                 <App ApiKey={ApiKey} backend={backend}></App>
             </main>
         </>
