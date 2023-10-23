@@ -28,14 +28,23 @@ export default function App({ ApiKey, backend }: AppProps) {
 
     const submitPrompt = useCallback(
         async (sow: string): Promise<ProjectData | null> => {
-            if (backend === "chatgpt") return await prompt(ApiKey, sow);
-            else return await promptDummy(sow);
+            if (backend === "chatgpt")
+                return await prompt(ApiKey, {
+                    prompt: sow,
+                    onDataChunk: (c) => console.log("parsed chunk", c),
+                    onFinish: function (projectData: ProjectData): void {
+                        console.log("finished project data", projectData);
+                    },
+                });
+            else
+                return await promptDummy({
+                    prompt: sow,
+                });
         },
         [ApiKey, backend],
     );
 
     const onSubmit = (sow: string) => {
-        console.log(sow);
         setSow(sow);
         window.scrollTo(0, 0);
         submitPrompt(sow).then((resp) => {

@@ -5,22 +5,25 @@ Estimate the total cost of the project.
 Estimate the number of engineers required.
 Outline the risks associated with the project. Highlight the criticality and potential consequence. 
 
-Answer only with unformatted JSON of type ProjectData that follows the following typescript definition and with nothing else. You are talking to a Javascript codebase.
+Answer only with NDJSON of ProjectData and Tasks that follows the following typescript definition and with nothing else. You are talking to a Javascript codebase.
 
 type Task = {
     title: string;
     desc: string;
     timeEst: number;
-    details: string;
+    details: string; // important to add steps and a list of subtasks
 };
 
-type ProjectData = {
-    tasks: Task[];
+type ProjectInfo = {
     timeEst: number;
     totalCost: number;
     numberOfEngineers: number;
     risks: string;
 };
+
+Format your reply as follows:
+{"type": "ProjectInfo", ...ProjectInfo}
+{"type": "Task", ...Task}
 
 
 Statement of Work:

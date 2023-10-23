@@ -15,22 +15,22 @@ export default function ProjectPlan({ data }: ProjectPlanProps) {
         {
             key: "1",
             label: "Total Time Estimate",
-            children: data.timeEst + " days",
+            children: data.info?.timeEst + " days",
         },
         {
             key: "2",
             label: "Cost estimate",
-            children: data.totalCost + "GBP",
+            children: data.info?.totalCost + "GBP",
         },
         {
             key: "3",
-            label: "Number of Engineres required",
-            children: data.numberOfEngineers,
+            label: "Number of Engineers required",
+            children: data.info?.numberOfEngineers,
         },
         {
             key: "4",
             label: "Risks",
-            children: data.risks,
+            children: data.info?.risks,
         },
     ];
     const modalHandleClose = () => {
