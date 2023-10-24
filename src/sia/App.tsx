@@ -68,8 +68,8 @@ export default function App({ ApiKey, backend }: AppProps) {
 
         if (sow) {
             return (
-                <div className="">
-                    <Spin tip="Processing" size="large">
+                <div className="mt-5">
+                    <Spin tip="Loading information..." size="large">
                         <div className="content" />
                     </Spin>
                 </div>
