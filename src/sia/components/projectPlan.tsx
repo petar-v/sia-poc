@@ -1,36 +1,37 @@
 import React, { useState } from "react";
 import ProjectData from "../projectData";
 
-import { Card, Space, Descriptions, Modal } from "antd";
+import { Card, Space, Descriptions, Modal, Skeleton, Typography } from "antd";
 import type { DescriptionsProps } from "antd";
 
 export type ProjectPlanProps = {
     data: ProjectData;
+    loading: boolean;
 };
 
-export default function ProjectPlan({ data }: ProjectPlanProps) {
+export default function ProjectPlan({ data, loading }: ProjectPlanProps) {
     const [taskOpen, setTaskOpen] = useState(-1);
 
     const items: DescriptionsProps["items"] = [
         {
             key: "1",
             label: "Total Time Estimate",
-            children: data.timeEst + " days",
+            children: data.info?.timeEst + " days",
         },
         {
             key: "2",
             label: "Cost estimate",
-            children: data.totalCost + "GBP",
+            children: data.info?.totalCost + "GBP",
         },
         {
             key: "3",
-            label: "Number of Engineres required",
-            children: data.numberOfEngineers,
+            label: "Number of Engineers required",
+            children: data.info?.numberOfEngineers,
         },
         {
             key: "4",
             label: "Risks",
-            children: data.risks,
+            children: data.info?.risks,
         },
     ];
     const modalHandleClose = () => {
@@ -38,35 +39,57 @@ export default function ProjectPlan({ data }: ProjectPlanProps) {
     };
     return (
         <>
-            <Descriptions title="Project Details" items={items} />
-            <Space className="flex flex-wrap">
-                {data.tasks.map((task, i) => (
-                    <div key={`taskC-${i}`}>
+            <div className="mb-3">
+                {data.info && (
+                    <Descriptions title="Project Details" items={items} />
+                )}
+                {!data.info && (
+                    <Skeleton active round paragraph loading={loading} />
+                )}
+            </div>
+            <>
+                <Typography.Title level={5}>Project Breakdown</Typography.Title>
+                <Space className="flex flex-wrap">
+                    {data.tasks.map((task, i) => (
+                        <div key={`taskC-${i}`}>
+                            <Card
+                                hoverable
+                                key={`task-${i}`}
+                                title={task.title}
+                                extra={<small>{task.timeEst} days</small>}
+                                style={{ width: 300 }}
+                                onClick={() => setTaskOpen(i)}
+                            >
+                                <p>{task.desc}</p>
+                            </Card>
+                            <Modal
+                                key={`modal-${i}`}
+                                title={task.title}
+                                footer={null}
+                                open={taskOpen === i}
+                                onOk={modalHandleClose}
+                                onCancel={modalHandleClose}
+                            >
+                                {task.details.split("\n").map((p, i) => (
+                                    <p key={`p-${i}`}>{p}</p>
+                                ))}
+                            </Modal>
+                        </div>
+                    ))}
+                    {loading && (
                         <Card
-                            hoverable
-                            key={`task-${i}`}
-                            title={task.title}
-                            extra={<small>{task.timeEst} days</small>}
+                            key={`dummy-loading`}
                             style={{ width: 300 }}
-                            onClick={() => setTaskOpen(i)}
+                            loading={true}
                         >
-                            <p>{task.desc}</p>
+                            <Card.Meta
+                                title="Card title"
+                                description="This is the description"
+                            />
                         </Card>
-                        <Modal
-                            key={`modal-${i}`}
-                            title={task.title}
-                            footer={null}
-                            open={taskOpen === i}
-                            onOk={modalHandleClose}
-                            onCancel={modalHandleClose}
-                        >
-                            {task.details.split("\n").map((p, i) => (
-                                <p key={`p-${i}`}>{p}</p>
-                            ))}
-                        </Modal>
-                    </div>
-                ))}
-            </Space>
+                    )}
+                </Space>
+            </>
         </>
     );
 }

@@ -1,32 +1,48 @@
-import React, { useState } from "react";
-import { Button, Input } from "antd";
+import React from "react";
+import { Button, Input, Form } from "antd";
 
 export type SoWInputProps = {
     onSubmit: (sow: string) => void;
 };
 
+type FieldType = {
+    statementOfWork: string;
+};
+
 export default function SoWInput({ onSubmit }: SoWInputProps) {
-    const [value, setValue] = useState("");
-    const submitSoW = () => {
-        // TODO: Add validation
-        onSubmit(value);
+    const submitSoW = (formValues: FieldType) => {
+        onSubmit(formValues.statementOfWork);
     };
 
     return (
-        <>
-            <Input.TextArea
-                className="h-full mb-5"
-                showCount
-                allowClear={true}
-                placeholder="Input your Statement of Work here..."
-                autoSize={{ minRows: 6 }}
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                onPressEnter={submitSoW}
-            />
-            <Button type="primary" onClick={submitSoW}>
-                Create Project Plan
-            </Button>
-        </>
+        <Form layout="vertical" onFinish={submitSoW}>
+            <Form.Item<FieldType>
+                name="statementOfWork"
+                rules={[
+                    {
+                        required: true,
+                        message: "Please input your Statement of Work!",
+                    },
+                ]}
+            >
+                <Input.TextArea
+                    className="h-full mb-5"
+                    showCount
+                    bordered
+                    allowClear={true}
+                    placeholder="Please input your Statement of Work here..."
+                    autoSize={{ minRows: 6 }}
+                />
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 0, span: 32 }}>
+                <Button
+                    style={{ width: "100%" }}
+                    type="primary"
+                    htmlType="submit"
+                >
+                    Create Project Plan
+                </Button>
+            </Form.Item>
+        </Form>
     );
 }

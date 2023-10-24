@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useCallback } from "react";
 
-import { Spin, Steps, Card } from "antd";
+import { Spin, Steps } from "antd";
 import {
     LoadingOutlined,
     SmileOutlined,
@@ -20,57 +20,59 @@ export type AppProps = {
     backend: "chatgpt" | "dummy";
 };
 
-const DUMMY_CARDS = 7;
-
 export default function App({ ApiKey, backend }: AppProps) {
     const [sow, setSow] = useState("");
     const [resp, setResp] = useState<ProjectData | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const submitPrompt = useCallback(
-        async (sow: string): Promise<ProjectData | null> => {
-            if (backend === "chatgpt") return await prompt(ApiKey, sow);
-            else return await promptDummy(sow);
+        async (
+            sow: string,
+            onPartialResponse: (response: ProjectData) => void,
+        ): Promise<ProjectData | null> => {
+            if (backend === "chatgpt")
+                return await prompt(ApiKey, {
+                    prompt: sow,
+                    onDataChunk: onPartialResponse,
+                    onFinish: function (projectData: ProjectData): void {
+                        console.log("finished project data", projectData);
+                    },
+                });
+            else
+                return await promptDummy({
+                    prompt: sow,
+                });
         },
         [ApiKey, backend],
     );
 
     const onSubmit = (sow: string) => {
-        console.log(sow);
         setSow(sow);
+        setLoading(true);
         window.scrollTo(0, 0);
-        submitPrompt(sow).then((resp) => {
+        submitPrompt(sow, (incompleteProjectData: ProjectData) => {
+            console.log("incomplete data", incompleteProjectData);
+            setResp({ ...incompleteProjectData });
+        }).then((resp) => {
             if (resp) {
-                setResp(resp);
+                setResp({ ...resp });
+                setLoading(false);
             }
-            // TODO: some retry logic
         });
     };
 
     const view = () => {
         if (resp) {
-            return <ProjectPlan data={resp} />;
+            return <ProjectPlan data={resp} loading={loading} />;
         }
 
         if (sow) {
             return (
-                <>
-                    <div className="flex flex-wrap">
-                        {[...Array(DUMMY_CARDS).keys()].map((i) => (
-                            <Card
-                                key={`dummy-${i}`}
-                                style={{ width: 300 }}
-                                loading={true}
-                            >
-                                <Card.Meta
-                                    title="Card title"
-                                    description="This is the description"
-                                />
-                            </Card>
-                        ))}
-                    </div>
-                    <Spin size="large"></Spin>
-                    <span>Processing</span>
-                </>
+                <div className="mt-5">
+                    <Spin tip="Loading information..." size="large">
+                        <div className="content" />
+                    </Spin>
+                </div>
             );
         }
 
@@ -82,7 +84,7 @@ export default function App({ ApiKey, backend }: AppProps) {
     };
 
     return (
-        <>
+        <div className="flex flex-col p-20">
             <Steps
                 className="mb-5"
                 items={[
@@ -94,7 +96,7 @@ export default function App({ ApiKey, backend }: AppProps) {
                     {
                         title: "Processing",
                         status: (() => {
-                            if (resp) {
+                            if (resp && !loading) {
                                 return "finish";
                             }
                             if (sow) {
@@ -102,21 +104,16 @@ export default function App({ ApiKey, backend }: AppProps) {
                             }
                             return "wait";
                         })(),
-                        icon:
-                            !resp && sow ? (
-                                <LoadingOutlined />
-                            ) : (
-                                <RobotOutlined />
-                            ),
+                        icon: loading ? <LoadingOutlined /> : <RobotOutlined />,
                     },
                     {
                         title: "Project plan",
-                        status: resp && sow ? "finish" : "wait",
+                        status: resp && sow && !loading ? "finish" : "wait",
                         icon: <SmileOutlined />,
                     },
                 ]}
             />
             {view()}
-        </>
+        </div>
     );
 }

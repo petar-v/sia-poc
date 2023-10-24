@@ -49,7 +49,9 @@
             "details": "1. Review project outcomes\n2. Prepare project closure report\n3. Conduct project review meetings"
         }
     ],
-    "timeEst": 58,
-    "totalCost": 50000,
-    "numberOfEngineers": 4
+    "info": {
+        "timeEst": 58,
+        "totalCost": 50000,
+        "numberOfEngineers": 4
+    }
 }
