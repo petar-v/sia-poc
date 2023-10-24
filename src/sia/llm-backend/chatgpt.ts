@@ -28,6 +28,18 @@ export const prompt = async (
     let fullReply = "";
     const projData: ProjectData = { info: undefined, tasks: [] };
 
+    const populateFromBuffer = (chunk: string) => {
+        const json = JSON.parse(chunk);
+        console.log("GOT TYOE", json.type);
+        if (json.type === "Task") {
+            projData.tasks.push(json as Task);
+        } else {
+            projData.info = json as ProjectInfo;
+            console.log("GOT INFO", projData.info);
+        }
+        prompt.onDataChunk && prompt.onDataChunk(projData, json);
+    };
+
     for await (const part of stream) {
         const delta = part.choices[0]?.delta?.content || "";
         buffer += delta;
@@ -41,16 +53,10 @@ export const prompt = async (
         bufferSplit
             .slice(0, bufferSplit.length - 1)
             .filter((l) => l.length > 0)
-            .forEach((chunk) => {
-                const json = JSON.parse(chunk);
-                if (json.type === "Task") {
-                    projData.tasks.push(json as Task);
-                } else {
-                    projData.info = json as ProjectInfo;
-                }
-                prompt.onDataChunk && prompt.onDataChunk(projData, json);
-            });
+            .forEach(populateFromBuffer);
     }
+    populateFromBuffer(buffer);
+
     prompt.onFinish && prompt.onFinish(projData);
     console.log("FULL REPLY", fullReply);
     return projData;
