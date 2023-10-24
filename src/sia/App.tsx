@@ -84,7 +84,7 @@ export default function App({ ApiKey, backend }: AppProps) {
     };
 
     return (
-        <div className="flex flex-col p-20">
+        <>
             <Steps
                 className="mb-5"
                 items={[
@@ -114,6 +114,6 @@ export default function App({ ApiKey, backend }: AppProps) {
                 ]}
             />
             {view()}
-        </div>
+        </>
     );
 }

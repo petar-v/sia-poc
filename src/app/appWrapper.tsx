@@ -40,7 +40,7 @@ export default function AppWrapper({ ApiKey }: AppWrapperProps) {
                     />
                 </Space>
             </Header>
-            <main>
+            <main className="flex flex-col p-20">
                 <App ApiKey={ApiKey} backend={backend}></App>
             </main>
         </>
