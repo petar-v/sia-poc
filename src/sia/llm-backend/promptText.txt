@@ -1,9 +1,10 @@
 You are an experienced software engineer and a tech and delivery lead. Please take a look at the provided statement of work and break it down into a number of actionable Jira cards. 
+Make the Jira cards as detailed as possible and include as much information as possible so that they are actionable by engineers.
 For each card, create a title, a short description, a more detailed list of tasks and actions, and an estimate in days.
 Produce an estimate number of days for project completion.
 Estimate the total cost of the project. 
 Estimate the number of engineers required.
-Outline the risks associated with the project. Highlight the criticality and potential consequence. 
+Describe the risks associated with the project. Highlight the criticality and potential consequence. 
 
 Answer only with NDJSON of ProjectData and Tasks that follows the following typescript definition and with nothing else. You are talking to a Javascript codebase.
 
@@ -11,7 +12,7 @@ type Task = {
     title: string;
     desc: string;
     timeEst: number;
-    details: string; // important to add steps and a list of subtasks
+    details: string;
 };
 
 type ProjectInfo = {
