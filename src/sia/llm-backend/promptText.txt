@@ -29,7 +29,6 @@ Compile project-level information. This includes overall time estimates, costs, 
 
 Before you begin, take a moment to digest the information and task and think step-by-step.
 
-
 Format your reply as follows, you are talking to JavaScript:
 {"type": "ProjectInfo", ...ProjectInfo}
 {"type": "Task", ...Task}
