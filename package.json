@@ -8,6 +8,7 @@
         "start": "next start",
         "lint": "next lint",
         "cf-deploy": "npx @cloudflare/next-on-pages@1",
+        "run-password-page": "npx wrangler pages dev build -b CFP_PASSWORD=test",
         "eslint": "eslint '**/*.{js,ts,jsx,tsx,cjs,mjs,astro}' --fix",
         "stylelint": "stylelint '**/*.{css,scss,js,ts}'",
         "prettify": "prettier --write .",
