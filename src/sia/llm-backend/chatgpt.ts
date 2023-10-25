@@ -10,7 +10,7 @@ export const prompt = async (
 ): Promise<ProjectData | null> => {
     const openai = new OpenAI({
         apiKey: api,
-        dangerouslyAllowBrowser: true, // FIXME: this exposes the key. Create a backend.
+        dangerouslyAllowBrowser: true, // FIXME: this exposes the key. Create a backend. Could use cloudflare functions
     });
 
     const promptText = prompt.prompt;
