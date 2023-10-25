@@ -66,5 +66,6 @@
         "vercel": "^32.5.0",
         "webpack": "^5.89.0",
         "wrangler": "^3.14.0"
-    }
+    },
+    "packageManager": "yarn@4.0.0"
 }
