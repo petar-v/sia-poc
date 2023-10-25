@@ -23,7 +23,7 @@
             "prettier --write",
             "stylelint"
         ],
-        "**/*.{md,mdx}": [
+        "**/*.{mdx}": [
             "prettier --write",
             "eslint --fix"
         ]
