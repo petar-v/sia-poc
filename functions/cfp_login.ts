@@ -9,7 +9,7 @@ export async function onRequestPost(context: {
     const body = await request.formData();
     const { password, redirect } = Object.fromEntries(body);
     const hashedPassword = await sha256(password.toString());
-    const hashedCfpPassword = await sha256(env.CFP_PASSWORD);
+    const hashedCfpPassword = await sha256(env.CFP_PASSWORD || "");
     const redirectPath = redirect.toString() || "/";
 
     if (hashedPassword === hashedCfpPassword) {

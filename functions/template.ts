@@ -12,7 +12,7 @@ export function getTemplate({
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Password Protected Site</title>
+      <title>SIA Login</title>
       <meta name="description" content="This site is password protected.">
       <link rel="shortcut icon" href="https://picocss.com/favicon.ico">
 
@@ -43,7 +43,7 @@ export function getTemplate({
       <main>
         <article>
           <hgroup>
-            <h1>Password</h1>
+            <h1>SIA</h1>
             <h2>Please enter your password for this site.</h2>
           </hgroup>
           ${
