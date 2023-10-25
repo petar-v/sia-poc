@@ -10,7 +10,7 @@ export const prompt = async (
 ): Promise<ProjectData | null> => {
     const openai = new OpenAI({
         apiKey: api,
-        dangerouslyAllowBrowser: true, // FIXME: this exposes the key. Create a backend.
+        dangerouslyAllowBrowser: true, // FIXME: this exposes the key. Create a backend. Could use cloudflare functions
     });
 
     const promptText = prompt.prompt;
@@ -30,12 +30,10 @@ export const prompt = async (
 
     const populateFromBuffer = (chunk: string) => {
         const json = JSON.parse(chunk);
-        console.log("GOT TYOE", json.type);
         if (json.type === "Task") {
             projData.tasks.push(json as Task);
         } else {
             projData.info = json as ProjectInfo;
-            console.log("GOT INFO", projData.info);
         }
         prompt.onDataChunk && prompt.onDataChunk(projData, json);
     };

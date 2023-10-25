@@ -1,6 +1,7 @@
+import { PropsWithChildren } from "react";
 import Image from "next/image";
 
-export default function Header({ children }) {
+export default function Header({ children }: PropsWithChildren<{}>) {
     return (
         <nav className="navbar navbar-light bg-light px-5">
             <a className="navbar-brand" href="/">

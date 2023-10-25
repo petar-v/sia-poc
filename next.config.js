@@ -1,18 +1,18 @@
 /** @type {import('next').NextConfig} */
 const path = require("path");
 const nextConfig = {
-  sassOptions: {
-    includePaths: [path.join(__dirname, "styles")],
-  },
+    sassOptions: {
+        includePaths: [path.join(__dirname, "styles")],
+    },
 
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.txt$/,
-      type: "asset/source",
-    });
+    webpack: (config) => {
+        config.module.rules.push({
+            test: /\.txt$/i,
+            loader: "raw-loader",
+        });
 
-    return config;
-  },
+        return config;
+    },
 };
 
 module.exports = nextConfig;
