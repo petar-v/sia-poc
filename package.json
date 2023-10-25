@@ -68,5 +68,5 @@
         "webpack": "^5.89.0",
         "wrangler": "^3.14.0"
     },
-    "packageManager": "yarn@3.6.3"
+    "packageManager": "yarn@4.0.0"
 }
