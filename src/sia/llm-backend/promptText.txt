@@ -31,4 +31,9 @@ resourceAllocation: number of people required to successfully deliver the projec
 risks: a key risk assessment which needs to be considered ahead of delivering the project
 Before you begin, take a moment to digest the information and task and think step-by-step.
 
+
+Format your reply as follows:
+{"type": "ProjectInfo", ...ProjectInfo}
+{"type": "Task", ...Task}
+
 Statement of Work:
