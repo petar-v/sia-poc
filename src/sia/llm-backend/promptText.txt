@@ -15,7 +15,7 @@ type Task = {
 type ProjectInfo = {
     timeEst: number;
     totalCost: number;
-    resourceAllocation: number;
+    numberOfEngineers: number;
     risks: string;
 };
 
@@ -32,7 +32,7 @@ For each task derived from the SOW, create a corresponding entry representing a 
 The ProjectInfo must include:
 	- timeEst: an overall time estimate of the project in days
 	- totalCost: total cost required to successfully deliver the project
-	- resourceAllocation: number of people required to successfully deliver the project and associated roles
+	- numberOfEngineers: number of people required to successfully deliver the project and associated roles
 	- risks: a key risk assessment which needs to be considered ahead of delivering the project
 
 Before you begin, take a moment to digest the information and task and think step-by-step.
