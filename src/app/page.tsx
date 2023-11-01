@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-
-import { Select } from "antd";
+import React from "react";
 
 import AppWrapper from "./appWrapper";
 
