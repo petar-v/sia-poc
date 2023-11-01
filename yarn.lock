@@ -6199,6 +6199,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-redux-wrapper@npm:^8.1.0":
+  version: 8.1.0
+  resolution: "next-redux-wrapper@npm:8.1.0"
+  peerDependencies:
+    next: ">=9"
+    react: "*"
+    react-redux: "*"
+  checksum: 9e2f904d46d501c2e904bd67d75b0add82f1763a2ea4f541c6176866a890cc29eace5df5779f3b4a4ffc5b470e271eb3c68d5a3098dc4c3d0a8ef11ea1a16185
+  languageName: node
+  linkType: hard
+
 "next@npm:14.0.1":
   version: 14.0.1
   resolution: "next@npm:14.0.1"
@@ -8279,6 +8290,7 @@ __metadata:
     install: "npm:^0.13.0"
     lint-staged: "npm:^15.0.2"
     next: "npm:14.0.1"
+    next-redux-wrapper: "npm:^8.1.0"
     openai: "npm:^4.14.2"
     postcss: "npm:^8.4.31"
     postcss-html: "npm:^1.5.0"
