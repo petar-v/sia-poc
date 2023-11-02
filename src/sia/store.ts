@@ -19,7 +19,11 @@ const reducer: typeof combinedReducer = (state, action) => {
     }
 };
 
-const makeStore = () => configureStore({ reducer });
+const makeStore = () =>
+    configureStore({
+        reducer,
+        devTools: process.env.NODE_ENV !== "production",
+    });
 
 export type AppStore = ReturnType<typeof makeStore>;
 export type AppState = ReturnType<AppStore["getState"]>;
