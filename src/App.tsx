@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Provider } from "react-redux";
 import { wrapper } from "./redux/store";
 
@@ -129,9 +129,7 @@ export type AppProps = {
     dummy: DummyBackend;
 };
 
-const App = (appProps: AppProps) => {
-    const { store, props } = wrapper.useWrappedStore(appProps);
-
+const App = (props: AppProps) => {
     const backend = useAppSelector(selectBackendState);
     const dispatch = useAppDispatch();
 
@@ -140,13 +138,13 @@ const App = (appProps: AppProps) => {
         { value: "dummy", label: "Dummy offline data" },
     ];
 
-    const configs: {
-        openai: OpenAIBackend;
-        dummy: DummyBackend;
-    } = { ...props };
+    useEffect(() => {
+        // switch to openAI backend by default
+        dispatch(setBackend(props.openai));
+    }, []);
 
     return (
-        <Provider store={store}>
+        <>
             <Header>
                 <Space wrap>
                     <Button
@@ -159,11 +157,12 @@ const App = (appProps: AppProps) => {
                         Reload
                     </Button>
                     <Select
-                        defaultValue={backend.name}
                         options={options}
+                        defaultValue={backend.name}
+                        value={backend.name}
                         onChange={(value: "openai" | "dummy") => {
-                            console.log("Backend set to", configs[value]);
-                            dispatch(setBackend(configs[value]));
+                            console.log("Backend set to", props[value]);
+                            dispatch(setBackend(props[value]));
                         }}
                     />
                 </Space>
@@ -171,8 +170,17 @@ const App = (appProps: AppProps) => {
             <main className="flex flex-col p-16">
                 <AppBody />
             </main>
+        </>
+    );
+};
+
+const WrappedApp = (appProps: AppProps) => {
+    const { store, props } = wrapper.useWrappedStore(appProps);
+    return (
+        <Provider store={store}>
+            <App {...props} />
         </Provider>
     );
 };
 
-export default App;
+export default WrappedApp;
