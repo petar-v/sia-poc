@@ -122,9 +122,14 @@ const AppBody = () => {
     );
 };
 
-// TODO: think about persisting the state: https://blog.logrocket.com/use-redux-next-js/
+// TODO: think about persisting the state between pages: https://blog.logrocket.com/use-redux-next-js/
 
-const App = (appProps: {}) => {
+export type AppProps = {
+    openai: OpenAIBackend;
+    dummy: DummyBackend;
+};
+
+const App = (appProps: AppProps) => {
     const { store, props } = wrapper.useWrappedStore(appProps);
 
     const backend = useAppSelector(selectBackendState);
@@ -138,17 +143,7 @@ const App = (appProps: {}) => {
     const configs: {
         openai: OpenAIBackend;
         dummy: DummyBackend;
-    } = {
-        openai: {
-            name: "openai",
-            // FIXME: keys not visible
-            apiKey: process.env.OPENAI_API_KEY || "",
-            orgKey: process.env.OPENAI_ORG_ID || "",
-        },
-        dummy: {
-            name: "dummy",
-        },
-    };
+    } = { ...props };
 
     return (
         <Provider store={store}>
