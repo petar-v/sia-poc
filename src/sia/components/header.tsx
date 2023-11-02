@@ -1,10 +1,11 @@
 import { PropsWithChildren } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header({ children }: PropsWithChildren<{}>) {
     return (
         <nav className="navbar navbar-light bg-light px-5">
-            <a className="navbar-brand" href="/">
+            <Link className="navbar-brand" href="/">
                 <Image
                     src="/logo.svg"
                     width="30"
@@ -13,7 +14,7 @@ export default function Header({ children }: PropsWithChildren<{}>) {
                     alt="SIA Logo"
                 />
                 Software Implementation Assistant
-            </a>
+            </Link>
             <div>{children}</div>
         </nav>
     );

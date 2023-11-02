@@ -1,26 +1,33 @@
-"use client";
 import React, { useState, useCallback } from "react";
+import { Provider, useDispatch, useSelector } from "react-redux";
 
-import { Spin, Steps } from "antd";
+import { wrapper } from "./store";
+
+import { Select, Button, Space, Spin, Steps } from "antd";
 import {
     LoadingOutlined,
     SmileOutlined,
     SolutionOutlined,
     RobotOutlined,
+    ReloadOutlined,
 } from "@ant-design/icons";
+
+import Header from "./components/header";
+
+import { selectBackendState, setBackend } from "./state/backendSlice";
+import Backend, {
+    getBackend,
+    DummyBackend,
+    OpenAIBackend,
+} from "./llm-backend/backend";
 
 import SoWInput from "./components/sowInput";
 import ProjectPlan from "./components/projectPlan";
 
-import { prompt, promptDummy } from "./llm-backend/chatgpt";
 import ProjectData from "./projectData";
 
-export type AppProps = {
-    ApiKey: string;
-    backend: "chatgpt" | "dummy";
-};
-
-export default function App({ ApiKey, backend }: AppProps) {
+const AppBody = () => {
+    const backend: Backend = useSelector(selectBackendState);
     const [sow, setSow] = useState("");
     const [resp, setResp] = useState<ProjectData | null>(null);
     const [loading, setLoading] = useState(false);
@@ -30,20 +37,16 @@ export default function App({ ApiKey, backend }: AppProps) {
             sow: string,
             onPartialResponse: (response: ProjectData) => void,
         ): Promise<ProjectData | null> => {
-            if (backend === "chatgpt")
-                return await prompt(ApiKey, {
-                    prompt: sow,
-                    onDataChunk: onPartialResponse,
-                    onFinish: function (projectData: ProjectData): void {
-                        console.log("finished project data", projectData);
-                    },
-                });
-            else
-                return await promptDummy({
-                    prompt: sow,
-                });
+            const call = {
+                prompt: sow,
+                onDataChunk: onPartialResponse,
+                onFinish: function (projectData: ProjectData): void {
+                    console.log("finished project data", projectData);
+                },
+            };
+            return getBackend(backend)(call);
         },
-        [ApiKey, backend],
+        [backend],
     );
 
     const onSubmit = (sow: string) => {
@@ -116,4 +119,64 @@ export default function App({ ApiKey, backend }: AppProps) {
             {view()}
         </>
     );
-}
+};
+
+// TODO: think about persisting the state: https://blog.logrocket.com/use-redux-next-js/
+
+const App = (appProps: {}) => {
+    const { store, props } = wrapper.useWrappedStore(appProps);
+
+    const backend = useSelector(selectBackendState);
+    const dispatch = useDispatch();
+
+    const options = [
+        { value: "openai", label: "ChatGPT 3.5 Turbo" },
+        { value: "dummy", label: "Dummy offline data" },
+    ];
+
+    const configs: {
+        openai: OpenAIBackend;
+        dummy: DummyBackend;
+    } = {
+        openai: {
+            name: "openai",
+            // FIXME: keys not visible
+            apiKey: process.env.OPENAI_API_KEY || "",
+            orgKey: process.env.OPENAI_ORG_ID || "",
+        },
+        dummy: {
+            name: "dummy",
+        },
+    };
+
+    return (
+        <Provider store={store}>
+            <Header>
+                <Space wrap>
+                    <Button
+                        type="dashed"
+                        icon={<ReloadOutlined />}
+                        onClick={() => {
+                            location.reload();
+                        }}
+                    >
+                        Reload
+                    </Button>
+                    <Select
+                        defaultValue={backend.name}
+                        options={options}
+                        onChange={(value: "openai" | "dummy") => {
+                            console.log("Backend set to", configs[value]);
+                            dispatch(setBackend(configs[value]));
+                        }}
+                    />
+                </Space>
+            </Header>
+            <main className="flex flex-col p-20">
+                <AppBody />
+            </main>
+        </Provider>
+    );
+};
+
+export default App;
