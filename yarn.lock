@@ -1190,14 +1190,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^18.2.33":
-  version: 18.2.33
-  resolution: "@types/react@npm:18.2.33"
+"@types/react@npm:^18.2.34":
+  version: 18.2.34
+  resolution: "@types/react@npm:18.2.34"
   dependencies:
     "@types/prop-types": "npm:*"
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 7f84dcf70eed3644973c7a47a63669d9e9ecc8d15b331fb272940a5c7cc322df11995eeeae1edfab5c278083cc3527477aa682c79f26667cfe8cd74481621884
+  checksum: 6d16f86b384e829edc3710b1dd9ec4eb1d6b26bc079c5cf605bd0cbf77ae6224f15c76949afadb7f53df4544cfe4025c1111fbe36732cd7f660a320fbc2e5866
   languageName: node
   linkType: hard
 
@@ -2408,7 +2408,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001406, caniuse-lite@npm:^1.0.30001538, caniuse-lite@npm:^1.0.30001541":
+"caniuse-lite@npm:^1.0.30001406":
+  version: 1.0.30001559
+  resolution: "caniuse-lite@npm:1.0.30001559"
+  checksum: 1ebeafb957b58e863b673ec2e78ea228ab43a24e4644a7050497dc5f798bdd9e4c510138c0807b65af8653c145cd09a9dff65faa1a9b34e30927dc4b67327122
+  languageName: node
+  linkType: hard
+
+"caniuse-lite@npm:^1.0.30001538, caniuse-lite@npm:^1.0.30001541":
   version: 1.0.30001554
   resolution: "caniuse-lite@npm:1.0.30001554"
   checksum: 21610b6884f8a383c4de77b1fed073133287988c5950c3d318b8829f01a5dac2f58648c16a6cef5bcf455ccc85f1b3380f00ddf2dbb73a97e611bdce28c6026d
@@ -6210,7 +6217,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:14.0.1":
+"next@npm:^14.0.1":
   version: 14.0.1
   resolution: "next@npm:14.0.1"
   dependencies:
@@ -8278,7 +8285,7 @@ __metadata:
     "@popperjs/core": "npm:^2.11.8"
     "@reduxjs/toolkit": "npm:^1.9.7"
     "@types/node": "npm:^20.8.10"
-    "@types/react": "npm:^18.2.33"
+    "@types/react": "npm:^18.2.34"
     "@types/react-dom": "npm:^18.2.14"
     antd: "npm:^5.10.3"
     autoprefixer: "npm:^10.4.16"
@@ -8289,7 +8296,7 @@ __metadata:
     husky: "npm:^8.0.3"
     install: "npm:^0.13.0"
     lint-staged: "npm:^15.0.2"
-    next: "npm:14.0.1"
+    next: "npm:^14.0.1"
     next-redux-wrapper: "npm:^8.1.0"
     openai: "npm:^4.14.2"
     postcss: "npm:^8.4.31"
