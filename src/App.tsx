@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { Provider, useDispatch, useSelector } from "react-redux";
 
-import { wrapper } from "./store";
+import { wrapper } from "./redux/store";
 
 import { Select, Button, Space, Spin, Steps } from "antd";
 import {
@@ -14,7 +14,7 @@ import {
 
 import Header from "./components/header";
 
-import { selectBackendState, setBackend } from "./state/backendSlice";
+import { selectBackendState, setBackend } from "./redux/store/backendSlice";
 import Backend, {
     getBackend,
     DummyBackend,
@@ -172,7 +172,7 @@ const App = (appProps: {}) => {
                     />
                 </Space>
             </Header>
-            <main className="flex flex-col p-20">
+            <main className="flex flex-col p-16">
                 <AppBody />
             </main>
         </Provider>

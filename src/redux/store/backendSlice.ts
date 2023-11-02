@@ -1,9 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { HYDRATE } from "next-redux-wrapper";
+import { AppState } from "./";
 
-import { AppState } from "../store";
-
-import Backend from "../llm-backend/backend";
+import Backend from "../../llm-backend/backend";
 
 export interface BackendState {
     backend: Backend;

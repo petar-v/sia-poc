@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import backendReducer from "./state/backendSlice";
+import backendReducer from "./backendSlice";
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
 import { combineReducers } from "@reduxjs/toolkit";
 
