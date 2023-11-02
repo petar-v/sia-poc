@@ -34,10 +34,8 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     Action
 >;
 
-// const dummyStore = makeStore(); // FIXME: get rid of this and use types inference instead
-// // Infer the `RootState` and `AppDispatch` types from the store itself
-// export type RootState = ReturnType<typeof dummyStore.getState>;
+export const store = makeStore(); // FIXME: get rid of this and use types inference instead
 // // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-// export type AppDispatch = typeof dummyStore.dispatch;
+export type AppDispatch = typeof store.dispatch;
 
 export const wrapper = createWrapper<AppStore>(makeStore);

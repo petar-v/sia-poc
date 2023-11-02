@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from "react";
-import { Provider, useDispatch, useSelector } from "react-redux";
-
+import { Provider } from "react-redux";
 import { wrapper } from "./redux/store";
+
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 import { Select, Button, Space, Spin, Steps } from "antd";
 import {
@@ -27,7 +28,7 @@ import ProjectPlan from "./components/projectPlan";
 import ProjectData from "./projectData";
 
 const AppBody = () => {
-    const backend: Backend = useSelector(selectBackendState);
+    const backend: Backend = useAppSelector(selectBackendState);
     const [sow, setSow] = useState("");
     const [resp, setResp] = useState<ProjectData | null>(null);
     const [loading, setLoading] = useState(false);
@@ -126,8 +127,8 @@ const AppBody = () => {
 const App = (appProps: {}) => {
     const { store, props } = wrapper.useWrappedStore(appProps);
 
-    const backend = useSelector(selectBackendState);
-    const dispatch = useDispatch();
+    const backend = useAppSelector(selectBackendState);
+    const dispatch = useAppDispatch();
 
     const options = [
         { value: "openai", label: "ChatGPT 3.5 Turbo" },
