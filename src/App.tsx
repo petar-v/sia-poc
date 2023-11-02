@@ -141,7 +141,7 @@ const App = (props: AppProps) => {
     useEffect(() => {
         // switch to openAI backend by default
         dispatch(setBackend(props.openai));
-    }, []);
+    }, [props.openai]);
 
     return (
         <>
