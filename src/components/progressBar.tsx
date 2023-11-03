@@ -4,6 +4,7 @@ import {
     SmileOutlined,
     SolutionOutlined,
     RobotOutlined,
+    QuestionCircleOutlined
 } from "@ant-design/icons";
 
 import { ProjectStage } from "@/redux/store/projectSlice";
@@ -41,8 +42,12 @@ const ProgressBar = ({ stage }: ProgressBarProps) => (
             },
             {
                 title: "Project plan",
-                status: stage === ProjectStage.COMPLETED ? "finish" : "wait",
-                icon: <SmileOutlined />,
+                status: [ProjectStage.COMPLETED, ProjectStage.ISSUES].includes(stage) ? "finish" : "wait",
+                icon: stage === ProjectStage.ISSUES? (
+                            <QuestionCircleOutlined />
+                        ) : (
+                            <SmileOutlined />
+                        ),
             },
         ]}
     />
