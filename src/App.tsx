@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from "react";
 import { Provider } from "react-redux";
-import { wrapper } from "./redux/store";
+import { wrapper } from "@/redux/store";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 import { Select, Button, Space, Spin } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
 
-import { selectBackendState, setBackend } from "./redux/store/backendSlice";
+import { selectBackendState, setBackend } from "@/redux/store/backendSlice";
 import {
     selectSoW,
     setStatementOfWork,
@@ -16,19 +16,22 @@ import {
     selectProjectStage,
     setAwaitingBackend,
     ProjectStage,
-} from "./redux/store/projectSlice";
+    selectIssue,
+    setIssue,
+} from "@/redux/store/projectSlice";
 
 import Backend, {
     getBackend,
     DummyBackend,
     OpenAIBackend,
-} from "./llm-backend/backend";
-import ProjectData from "./projectData";
+} from "@/llm-backend/backend";
+import ProjectData, { Issue } from "@/projectData";
 
 import Header from "@/components/header";
 import SoWInput from "@/components/sowInput";
 import ProjectPlan from "@/components/projectPlan";
 import ProgressBar from "@/components/progressBar";
+import IssueDisplay from "@/components/issueDisplay";
 
 const AppBody = () => {
     const dispatch = useAppDispatch();
@@ -36,6 +39,7 @@ const AppBody = () => {
     const backend: Backend = useAppSelector(selectBackendState);
     const statementOfWork = useAppSelector(selectSoW);
     const projectPlan = useAppSelector(selectProjectPlan);
+    const issue = useAppSelector(selectIssue);
 
     const projectStage = useAppSelector(selectProjectStage);
 
@@ -51,10 +55,13 @@ const AppBody = () => {
                 onFinish: function (projectData: ProjectData): void {
                     console.log("finished project data", projectData);
                 },
+                onIssue: function (issue: Issue): void {
+                    dispatch(setIssue(issue));
+                },
             };
             return getBackend(backend)(call);
         },
-        [backend],
+        [backend, dispatch],
     );
 
     const onSubmit = (sow: string) => {
@@ -74,6 +81,10 @@ const AppBody = () => {
     };
 
     const view = () => {
+        if (issue) {
+            return <IssueDisplay {...issue} />;
+        }
+
         if (projectPlan) {
             return (
                 <ProjectPlan

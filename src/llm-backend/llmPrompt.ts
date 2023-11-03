@@ -1,4 +1,4 @@
-import ProjectData, { Task, ProjectInfo } from "@/projectData";
+import ProjectData, { Task, ProjectInfo, Issue } from "@/projectData";
 
 type LLMPrompt = {
     prompt: string;
@@ -7,6 +7,7 @@ type LLMPrompt = {
         chunk: Task | ProjectInfo,
     ) => void;
     onFinish?: (projectData: ProjectData) => void;
+    onIssue?: (issue: Issue) => void;
 };
 
 export default LLMPrompt;
