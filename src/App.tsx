@@ -1,19 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Provider } from "react-redux";
 import { wrapper } from "./redux/store";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-import { Select, Button, Space, Spin, Steps } from "antd";
-import {
-    LoadingOutlined,
-    SmileOutlined,
-    SolutionOutlined,
-    RobotOutlined,
-    ReloadOutlined,
-} from "@ant-design/icons";
-
-import Header from "./components/header";
+import { Select, Button, Space, Spin } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
 
 import { selectBackendState, setBackend } from "./redux/store/backendSlice";
 import {
@@ -31,11 +23,12 @@ import Backend, {
     DummyBackend,
     OpenAIBackend,
 } from "./llm-backend/backend";
-
-import SoWInput from "./components/sowInput";
-import ProjectPlan from "./components/projectPlan";
-
 import ProjectData from "./projectData";
+
+import Header from "@/components/header";
+import SoWInput from "@/components/sowInput";
+import ProjectPlan from "@/components/projectPlan";
+import ProgressBar from "@/components/progressBar";
 
 const AppBody = () => {
     const dispatch = useAppDispatch();
@@ -109,45 +102,7 @@ const AppBody = () => {
 
     return (
         <>
-            <Steps
-                className="mb-5"
-                items={[
-                    {
-                        title: "Statement of Work",
-                        status:
-                            projectStage === ProjectStage.INITIAL
-                                ? "process"
-                                : "finish",
-                        icon: <SolutionOutlined />,
-                    },
-                    {
-                        title: "Processing",
-                        status: (() => {
-                            if (projectStage === ProjectStage.COMPLETED) {
-                                return "finish";
-                            }
-                            if (projectStage === ProjectStage.PROCESSING) {
-                                return "process";
-                            }
-                            return "wait";
-                        })(),
-                        icon:
-                            projectStage === ProjectStage.PROCESSING ? (
-                                <LoadingOutlined />
-                            ) : (
-                                <RobotOutlined />
-                            ),
-                    },
-                    {
-                        title: "Project plan",
-                        status:
-                            projectStage === ProjectStage.COMPLETED
-                                ? "finish"
-                                : "wait",
-                        icon: <SmileOutlined />,
-                    },
-                ]}
-            />
+            <ProgressBar stage={projectStage} />
             {view()}
         </>
     );
