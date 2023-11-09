@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import ProjectData, { Task, ProjectInfo } from "@/projectData";
+import ProjectData, { Task, ProjectInfo, Issue } from "@/projectData";
 import promptContext from "./promptText.txt";
 import LLMPrompt from "./llmPrompt";
 
@@ -25,14 +25,23 @@ export const prompt = async (
 
     let buffer = "";
     let fullReply = "";
-    const projData: ProjectData = { info: undefined, tasks: [] };
+    let projData: ProjectData = { info: undefined, tasks: [] };
 
     const populateFromBuffer = (chunk: string) => {
+        console.debug("Parsing", chunk);
         const json = JSON.parse(chunk);
         if (json.type === "Task") {
-            projData.tasks.push(json as Task);
+            projData = {
+                ...projData,
+                tasks: [...projData.tasks, json as Task],
+            };
+        } else if (json.type === "Issue") {
+            prompt.onIssue && prompt.onIssue(json as Issue);
         } else {
-            projData.info = json as ProjectInfo;
+            projData = {
+                ...projData,
+                info: json as ProjectInfo,
+            };
         }
         prompt.onDataChunk && prompt.onDataChunk(projData, json);
     };

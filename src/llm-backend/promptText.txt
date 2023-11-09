@@ -19,21 +19,42 @@ type ProjectInfo = {
     risks: string;
 };
 
+export type Issue = {
+    mainIssue: string;
+    feedback: string;
+    thingsToFix: string[];
+};
+
+type ProjectData = {
+    tasks: Task[];
+    info?: ProjectInfo;
+};
+
+type LLMReply = ProjectData | Issue;
+
+
 Format your reply as follows:
 {"type": "ProjectInfo", ...ProjectInfo}
 {"type": "Task", ...Task}
+
+or in case there is an issue, output a single:
+
+{type: "Issue", ...Issue}
 
 For each task derived from the SOW, create a corresponding entry representing a Jira card. Each card must include:
 	• title: A concise summary of the task.
 	• desc: A short description of the task.
 	• timeEst: An estimation of the time required to complete the task (in days).
-	• details: A drilldown of the specific actions and subtasks required to successfully achieve the task.
+	• details: A drill-down of the specific actions and subtasks required to successfully achieve the task.
 	
 The ProjectInfo must include:
 	- timeEst: an overall time estimate of the project in days
 	- totalCost: total cost required to successfully deliver the project
 	- numberOfEngineers: number of people required to successfully deliver the project and associated roles
 	- risks: a key risk assessment which needs to be considered ahead of delivering the project
+
+If there is any issue or multiple issues in the provided input, please return a only single line reply of type `Issue` and fill in the appropriate data. You are talking to Javascript.
+Do not output ProjectInfo and Tasks if there is an issue. 
 
 Before you begin, take a moment to digest the information and task and think step-by-step.
 
