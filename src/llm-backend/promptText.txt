@@ -45,7 +45,7 @@ For each task derived from the SOW, create a corresponding entry representing a 
 	• title: A concise summary of the task.
 	• desc: A short description of the task.
 	• timeEst: An estimation of the time required to complete the task (in days).
-	• details: A drilldown of the specific actions and subtasks required to successfully achieve the task.
+	• details: A drill-down of the specific actions and subtasks required to successfully achieve the task.
 	
 The ProjectInfo must include:
 	- timeEst: an overall time estimate of the project in days
