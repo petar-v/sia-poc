@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import ProjectData, { Task, ProjectInfo } from "../projectData";
+import ProjectData, { Task, ProjectInfo } from "@/projectData";
 import promptContext from "./promptText.txt";
 import LLMPrompt from "./llmPrompt";
 

@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppState } from "./";
 
-import Backend from "../../llm-backend/backend";
+import Backend from "@/llm-backend/backend";
 
 export interface BackendState {
     backend: Backend;
