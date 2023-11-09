@@ -25,6 +25,5 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ## TO DO
 
 - Add docs about deployment
-- Dockerize
 - Installation docs
 - How to edit prompts
