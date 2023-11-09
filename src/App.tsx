@@ -71,10 +71,10 @@ const AppBody = () => {
         submitPrompt(sow, (incompleteProjectData: ProjectData) => {
             dispatch(setProjectPlan({ ...incompleteProjectData }));
         }).then((resp) => {
+            dispatch(setAwaitingBackend(false));
             if (resp) {
                 console.log("incomplete data", resp);
                 dispatch(setProjectPlan({ ...resp }));
-                dispatch(setAwaitingBackend(false));
             }
             // TODO: handle edge case
         });

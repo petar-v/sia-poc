@@ -62,13 +62,14 @@ export const selectProjectPlan = (state: AppState) =>
 export const selectIssue = (state: AppState) => state[projectSlice.name].issue;
 
 export const selectProjectStage = (state: AppState): ProjectStage => {
-    const { statementOfWork, awaitingBackend, projectPlan } =
+    const { statementOfWork, awaitingBackend, projectPlan, issue } =
         state[projectSlice.name];
+
+    if (issue) return ProjectStage.ISSUES;
+
     if (!projectPlan && !statementOfWork) return ProjectStage.INITIAL;
 
-    if (projectPlan && !awaitingBackend) {
-        return ProjectStage.COMPLETED;
-    }
+    if (projectPlan && !awaitingBackend) return ProjectStage.COMPLETED;
 
     if (statementOfWork) return ProjectStage.PROCESSING;
 
