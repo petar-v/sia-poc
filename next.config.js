@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
 const path = require("path");
 const nextConfig = {
+    reactStrictMode: true,
+
+    experimental: {
+        webpackBuildWorker: true,
+    },
     sassOptions: {
         includePaths: [path.join(__dirname, "styles")],
     },
