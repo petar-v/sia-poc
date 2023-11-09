@@ -16,7 +16,15 @@ import {
 import Header from "./components/header";
 
 import { selectBackendState, setBackend } from "./redux/store/backendSlice";
-import { selectSoW, setStatementOfWork } from "./redux/store/projectSlice";
+import {
+    selectSoW,
+    setStatementOfWork,
+    selectProjectPlan,
+    setProjectPlan,
+    selectProjectStage,
+    setAwaitingBackend,
+    ProjectStage,
+} from "./redux/store/projectSlice";
 
 import Backend, {
     getBackend,
@@ -34,10 +42,11 @@ const AppBody = () => {
 
     const backend: Backend = useAppSelector(selectBackendState);
     const statementOfWork = useAppSelector(selectSoW);
+    const projectPlan = useAppSelector(selectProjectPlan);
 
-    const [resp, setResp] = useState<ProjectData | null>(null);
-    const [loading, setLoading] = useState(false);
+    const projectStage = useAppSelector(selectProjectStage);
 
+    // FIXME: move this to Redux
     const submitPrompt = useCallback(
         async (
             sow: string,
@@ -57,22 +66,28 @@ const AppBody = () => {
 
     const onSubmit = (sow: string) => {
         dispatch(setStatementOfWork(sow));
-        setLoading(true);
+        dispatch(setAwaitingBackend(true));
         window.scrollTo(0, 0);
         submitPrompt(sow, (incompleteProjectData: ProjectData) => {
-            console.log("incomplete data", incompleteProjectData);
-            setResp({ ...incompleteProjectData });
+            dispatch(setProjectPlan({ ...incompleteProjectData }));
         }).then((resp) => {
             if (resp) {
-                setResp({ ...resp });
-                setLoading(false);
+                console.log("incomplete data", resp);
+                dispatch(setProjectPlan({ ...resp }));
+                dispatch(setAwaitingBackend(false));
             }
+            // TODO: handle edge case
         });
     };
 
     const view = () => {
-        if (resp) {
-            return <ProjectPlan data={resp} loading={loading} />;
+        if (projectPlan) {
+            return (
+                <ProjectPlan
+                    data={projectPlan}
+                    loading={projectStage === ProjectStage.PROCESSING}
+                />
+            );
         }
 
         if (statementOfWork) {
@@ -100,26 +115,33 @@ const AppBody = () => {
                     {
                         title: "Statement of Work",
                         status:
-                            !resp && !statementOfWork ? "process" : "finish",
+                            projectStage === ProjectStage.INITIAL
+                                ? "process"
+                                : "finish",
                         icon: <SolutionOutlined />,
                     },
                     {
                         title: "Processing",
                         status: (() => {
-                            if (resp && !loading) {
+                            if (projectStage === ProjectStage.COMPLETED) {
                                 return "finish";
                             }
-                            if (statementOfWork) {
+                            if (projectStage === ProjectStage.PROCESSING) {
                                 return "process";
                             }
                             return "wait";
                         })(),
-                        icon: loading ? <LoadingOutlined /> : <RobotOutlined />,
+                        icon:
+                            projectStage === ProjectStage.PROCESSING ? (
+                                <LoadingOutlined />
+                            ) : (
+                                <RobotOutlined />
+                            ),
                     },
                     {
                         title: "Project plan",
                         status:
-                            resp && statementOfWork && !loading
+                            projectStage === ProjectStage.COMPLETED
                                 ? "finish"
                                 : "wait",
                         icon: <SmileOutlined />,
