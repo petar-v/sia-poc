@@ -16,6 +16,8 @@ import {
 import Header from "./components/header";
 
 import { selectBackendState, setBackend } from "./redux/store/backendSlice";
+import { selectSoW, setStatementOfWork } from "./redux/store/projectSlice";
+
 import Backend, {
     getBackend,
     DummyBackend,
@@ -28,8 +30,11 @@ import ProjectPlan from "./components/projectPlan";
 import ProjectData from "./projectData";
 
 const AppBody = () => {
+    const dispatch = useAppDispatch();
+
     const backend: Backend = useAppSelector(selectBackendState);
-    const [sow, setSow] = useState("");
+    const statementOfWork = useAppSelector(selectSoW);
+
     const [resp, setResp] = useState<ProjectData | null>(null);
     const [loading, setLoading] = useState(false);
 
@@ -51,7 +56,7 @@ const AppBody = () => {
     );
 
     const onSubmit = (sow: string) => {
-        setSow(sow);
+        dispatch(setStatementOfWork(sow));
         setLoading(true);
         window.scrollTo(0, 0);
         submitPrompt(sow, (incompleteProjectData: ProjectData) => {
@@ -70,7 +75,7 @@ const AppBody = () => {
             return <ProjectPlan data={resp} loading={loading} />;
         }
 
-        if (sow) {
+        if (statementOfWork) {
             return (
                 <div className="mt-5">
                     <Spin tip="Loading information..." size="large">
@@ -94,7 +99,8 @@ const AppBody = () => {
                 items={[
                     {
                         title: "Statement of Work",
-                        status: !resp && !sow ? "process" : "finish",
+                        status:
+                            !resp && !statementOfWork ? "process" : "finish",
                         icon: <SolutionOutlined />,
                     },
                     {
@@ -103,7 +109,7 @@ const AppBody = () => {
                             if (resp && !loading) {
                                 return "finish";
                             }
-                            if (sow) {
+                            if (statementOfWork) {
                                 return "process";
                             }
                             return "wait";
@@ -112,7 +118,10 @@ const AppBody = () => {
                     },
                     {
                         title: "Project plan",
-                        status: resp && sow && !loading ? "finish" : "wait",
+                        status:
+                            resp && statementOfWork && !loading
+                                ? "finish"
+                                : "wait",
                         icon: <SmileOutlined />,
                     },
                 ]}
@@ -141,7 +150,7 @@ const App = (props: AppProps) => {
     useEffect(() => {
         // switch to openAI backend by default
         dispatch(setBackend(props.openai));
-    }, [props.openai]);
+    }, [dispatch, props.openai]);
 
     return (
         <>

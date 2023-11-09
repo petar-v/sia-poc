@@ -1,10 +1,13 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import backendReducer from "./backendSlice";
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
 import { combineReducers } from "@reduxjs/toolkit";
 
+import backendReducer from "./backendSlice";
+import projectReducer from "./projectSlice";
+
 const combinedReducer = combineReducers({
     backend: backendReducer,
+    project: projectReducer,
 });
 
 const reducer: typeof combinedReducer = (state, action) => {
