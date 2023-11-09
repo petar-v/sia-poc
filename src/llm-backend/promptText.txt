@@ -25,13 +25,19 @@ export type Issue = {
     thingsToFix: string[];
 };
 
-export type LLMReply = ProjectData | Issue;
+type ProjectData = {
+    tasks: Task[];
+    info?: ProjectInfo;
+};
+
+type LLMReply = ProjectData | Issue;
+
 
 Format your reply as follows:
 {"type": "ProjectInfo", ...ProjectInfo}
 {"type": "Task", ...Task}
 
-or:
+or in case there is an issue, output a single:
 
 {type: "Issue", ...Issue}
 
@@ -48,6 +54,7 @@ The ProjectInfo must include:
 	- risks: a key risk assessment which needs to be considered ahead of delivering the project
 
 If there is any issue or multiple issues in the provided input, please return a only single line reply of type `Issue` and fill in the appropriate data. You are talking to Javascript.
+Do not output ProjectInfo and Tasks if there is an issue. 
 
 Before you begin, take a moment to digest the information and task and think step-by-step.
 

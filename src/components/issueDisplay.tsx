@@ -32,18 +32,20 @@ export default function IssueDisplay({
                 <Divider orientation="left">Feedback</Divider>
                 <p>{feedback}</p>
             </div>
-            <div className="my-2">
-                <Divider orientation="left">Things to fix</Divider>
-                <List
-                    bordered
-                    dataSource={thingsToFix}
-                    renderItem={(item) => (
-                        <List.Item>
-                            <Checkbox>{item}</Checkbox>
-                        </List.Item>
-                    )}
-                />
-            </div>
+            {thingsToFix && (
+                <div className="my-2">
+                    <Divider orientation="left">Things to fix</Divider>
+                    <List
+                        bordered
+                        dataSource={thingsToFix}
+                        renderItem={(item) => (
+                            <List.Item>
+                                <Checkbox>{item}</Checkbox>
+                            </List.Item>
+                        )}
+                    />
+                </div>
+            )}
         </ConfigProvider>
     );
 }
