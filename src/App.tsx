@@ -20,11 +20,7 @@ import {
     setIssue,
 } from "@/redux/store/projectSlice";
 
-import Backend, {
-    getBackend,
-    DummyBackend,
-    OpenAIBackend,
-} from "@/llm-backend/backend";
+import Backend, { getBackend } from "@/llm-backend/backend";
 import ProjectData, { Issue } from "@/projectData";
 
 import Header from "@/components/header";
@@ -121,12 +117,9 @@ const AppBody = () => {
 
 // TODO: think about persisting the state between pages: https://blog.logrocket.com/use-redux-next-js/
 
-export type AppProps = {
-    openai: OpenAIBackend;
-    dummy: DummyBackend;
-};
+const defaultBackend = "openai";
 
-const App = (props: AppProps) => {
+const App = () => {
     const backend = useAppSelector(selectBackendState);
     const dispatch = useAppDispatch();
 
@@ -137,8 +130,8 @@ const App = (props: AppProps) => {
 
     useEffect(() => {
         // switch to openAI backend by default
-        dispatch(setBackend(props.openai));
-    }, [dispatch, props.openai]);
+        dispatch(setBackend(defaultBackend));
+    }, [dispatch]);
 
     return (
         <>
@@ -158,8 +151,8 @@ const App = (props: AppProps) => {
                         defaultValue={backend.name}
                         value={backend.name}
                         onChange={(value: "openai" | "dummy") => {
-                            console.log("Backend set to", props[value]);
-                            dispatch(setBackend(props[value]));
+                            console.log("Backend set to", value);
+                            dispatch(setBackend(value));
                         }}
                     />
                 </Space>
@@ -171,7 +164,7 @@ const App = (props: AppProps) => {
     );
 };
 
-const WrappedApp = (appProps: AppProps) => {
+const WrappedApp = (appProps: {}) => {
     const { store, props } = wrapper.useWrappedStore(appProps);
     return (
         <Provider store={store}>
