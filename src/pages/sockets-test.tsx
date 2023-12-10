@@ -55,14 +55,13 @@ export default function SocketHome({
             console.log("connected");
         });
 
+        socket.on("reply", (response: any) => {
+            setReply((prev) => prev + response);
+        });
+
         socket.on("connect_error", (e) => {
             console.error("socket error", e);
             setReply(`Socket error ${e.message}`);
-        });
-
-        socket.on("bot-reply", (msg) => {
-            console.log("Received", msg);
-            setReply(msg);
         });
 
         return socket;
@@ -74,6 +73,7 @@ export default function SocketHome({
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
+        setReply("");
     };
     const onSubmit = () => {
         if (socket !== null) {

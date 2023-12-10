@@ -29,6 +29,7 @@ const getSessionData = (socket: Socket) => socket.handshake.auth as SessionData;
 const chatSessions: { [key: string]: ChatSession } = {};
 
 const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
+    // TODO: recreate the server in dev env
     if (res.socket.server.io) {
         console.log("Socket is already running.");
         res.end();
@@ -52,7 +53,7 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
     res.socket.server.io = io;
 
-    io.on("connection", async (socket) => {
+    io.on("connection", (socket) => {
         // here be custom session syncing between next.js and socket.io
         const session = getSessionData(socket);
         const sessionID = session.id;
@@ -64,9 +65,16 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
             chatSessions[sessionID] = createChatSession(openAIkey);
         }
         const chatSession = chatSessions[sessionID];
-        socket.on("prompt", (message) => {
-            const stream = chatSession.prompt(message);
-            socket.emit("bot-reply", "Hi");
+        socket.on("prompt", async (message, callback) => {
+            const stream = await chatSession.prompt(message);
+            const reader = stream.getReader();
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) {
+                    break;
+                }
+                socket.emit("reply", value);
+            }
         });
 
         // TODO: kill the chatgpt session once the user destroys the session.
