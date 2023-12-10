@@ -29,9 +29,6 @@ import ProjectPlan from "@/components/projectPlan";
 import ProgressBar from "@/components/progressBar";
 import IssueDisplay from "@/components/issueDisplay";
 
-import io from "socket.io-client";
-import type { Socket } from "socket.io-client";
-
 const AppBody = () => {
     const dispatch = useAppDispatch();
 
@@ -118,8 +115,6 @@ const AppBody = () => {
     );
 };
 
-// TODO: think about persisting the state between pages: https://blog.logrocket.com/use-redux-next-js/
-
 const defaultBackend = "openai";
 
 const App = () => {
@@ -167,50 +162,11 @@ const App = () => {
     );
 };
 
-const SocketApp = () => {
-    const [input, setInput] = useState("");
-
-    let socket: Socket | null = null;
-
-    const socketInitializer = async () => {
-        fetch("/api/socket");
-        socket = io();
-
-        socket.on("connect", () => {
-            console.log("connected");
-        });
-
-        socket.on("update-input", (msg) => {
-            setInput(msg);
-        });
-    };
-
-    useEffect(() => {
-        socketInitializer();
-    });
-
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setInput(e.target.value);
-        if (socket !== null) {
-            socket.emit("input-change", e.target.value);
-        }
-    };
-    return (
-        <main>
-            <input
-                placeholder="Type something"
-                value={input}
-                onChange={onChangeHandler}
-            />
-        </main>
-    );
-};
-
 const WrappedApp = (appProps: {}) => {
     const { store, props } = wrapper.useWrappedStore(appProps);
     return (
         <Provider store={store}>
-            <SocketApp {...props} />
+            <App {...props} />
         </Provider>
     );
 };
