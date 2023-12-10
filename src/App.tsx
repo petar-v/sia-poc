@@ -29,10 +29,8 @@ import ProjectPlan from "@/components/projectPlan";
 import ProgressBar from "@/components/progressBar";
 import IssueDisplay from "@/components/issueDisplay";
 
-import socket from "./pages/api/socket";
 import io from "socket.io-client";
 import type { Socket } from "socket.io-client";
-import { DefaultEventsMap } from "@socket.io/component-emitter";
 
 const AppBody = () => {
     const dispatch = useAppDispatch();
@@ -169,9 +167,7 @@ const App = () => {
     );
 };
 
-const WrappedApp = (appProps: {}) => {
-    const { store, props } = wrapper.useWrappedStore(appProps);
-
+const SocketApp = () => {
     const [input, setInput] = useState("");
 
     let socket: Socket | null = null;
@@ -200,15 +196,21 @@ const WrappedApp = (appProps: {}) => {
         }
     };
     return (
+        <main>
+            <input
+                placeholder="Type something"
+                value={input}
+                onChange={onChangeHandler}
+            />
+        </main>
+    );
+};
+
+const WrappedApp = (appProps: {}) => {
+    const { store, props } = wrapper.useWrappedStore(appProps);
+    return (
         <Provider store={store}>
-            {/* <App {...props} /> */}
-            <main>
-                <input
-                    placeholder="Type something"
-                    value={input}
-                    onChange={onChangeHandler}
-                />
-            </main>
+            <SocketApp {...props} />
         </Provider>
     );
 };
