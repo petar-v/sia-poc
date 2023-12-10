@@ -39,7 +39,7 @@
         "iron-session": "^8.0.1",
         "next": "^14.0.1",
         "next-redux-wrapper": "^8.1.0",
-        "openai": "^4.14.2",
+        "openai": "^4.20.1",
         "react": "^18.2.0",
         "react-bootstrap": "^2.9.1",
         "react-dom": "^18.2.0",

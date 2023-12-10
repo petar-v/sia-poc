@@ -6731,9 +6731,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"openai@npm:^4.14.2":
-  version: 4.14.2
-  resolution: "openai@npm:4.14.2"
+"openai@npm:^4.20.1":
+  version: 4.20.1
+  resolution: "openai@npm:4.20.1"
   dependencies:
     "@types/node": "npm:^18.11.18"
     "@types/node-fetch": "npm:^2.6.4"
@@ -6746,7 +6746,7 @@ __metadata:
     web-streams-polyfill: "npm:^3.2.1"
   bin:
     openai: bin/cli
-  checksum: 2dcc5db4bbc02b7dbbd415c5af97b4d5a5275e6eaaa6f5c5f655c57e64d9a8dd72e6dc80243ca627e506aa57799a87f74180e870c58d43ca77ad7aaecee473d0
+  checksum: c80c08c9cc39e64114e8bd41f8580223638476aa9fe5e11a5b505128350fcceb1fe6886004c9b37431b4520bec91815e897f545335b24f8f15bdd69c7185af45
   languageName: node
   linkType: hard
 
@@ -8471,7 +8471,7 @@ __metadata:
     lint-staged: "npm:^15.0.2"
     next: "npm:^14.0.1"
     next-redux-wrapper: "npm:^8.1.0"
-    openai: "npm:^4.14.2"
+    openai: "npm:^4.20.1"
     postcss: "npm:^8.4.31"
     postcss-html: "npm:^1.5.0"
     prettier: "npm:^3.0.3"
