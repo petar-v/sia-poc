@@ -2742,6 +2742,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie@npm:0.6.0":
+  version: 0.6.0
+  resolution: "cookie@npm:0.6.0"
+  checksum: c1f8f2ea7d443b9331680598b0ae4e6af18a618c37606d1bbdc75bec8361cce09fe93e727059a673f2ba24467131a9fb5a4eec76bb1b149c1b3e1ccb268dc583
+  languageName: node
+  linkType: hard
+
 "cookie@npm:^0.5.0":
   version: 0.5.0
   resolution: "cookie@npm:0.5.0"
@@ -5179,6 +5186,24 @@ __metadata:
   version: 2.0.0
   resolution: "ip@npm:2.0.0"
   checksum: 1270b11e534a466fb4cf4426cbcc3a907c429389f7f4e4e3b288b42823562e88d6a509ceda8141a507de147ca506141f745005c0aa144569d94cf24a54eb52bc
+  languageName: node
+  linkType: hard
+
+"iron-session@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "iron-session@npm:8.0.1"
+  dependencies:
+    cookie: "npm:0.6.0"
+    iron-webcrypto: "npm:1.0.0"
+    uncrypto: "npm:0.1.3"
+  checksum: 8d25fe44a00959fe2c2650c9a27c2fdbc14ed2714e1707c43e03005e7da54e2995103918c17cd0fd31b11471fdbe32b1a089442320595984b32930a23fa5c8c2
+  languageName: node
+  linkType: hard
+
+"iron-webcrypto@npm:1.0.0":
+  version: 1.0.0
+  resolution: "iron-webcrypto@npm:1.0.0"
+  checksum: 1af9fc319c21d44023e08b7019b4c5d0b58f32c6fccab6e4885522b3efa2f6c17491f9caccba74d816f04b4af3148f5bd91a9b506b6d84c2db6ac0a678fbd88a
   languageName: node
   linkType: hard
 
@@ -8434,6 +8459,7 @@ __metadata:
     file-loader: "npm:^6.2.0"
     husky: "npm:^8.0.3"
     install: "npm:^0.13.0"
+    iron-session: "npm:^8.0.1"
     lint-staged: "npm:^15.0.2"
     next: "npm:^14.0.1"
     next-redux-wrapper: "npm:^8.1.0"
@@ -9570,6 +9596,13 @@ __metadata:
   peerDependencies:
     react: ">=16.14.0"
   checksum: b247e768426a829b6f4314c9789314ac57208cffdb7e24b79b7ffbb704838e48ef7e31f90356292d4d0a429f07566213bed8b0d13525a8790be96e1c88a56822
+  languageName: node
+  linkType: hard
+
+"uncrypto@npm:0.1.3":
+  version: 0.1.3
+  resolution: "uncrypto@npm:0.1.3"
+  checksum: 0020f74b0ce34723196d8982a73bb7f40cff455a41b8f88ae146b86885f4e66e41a1241fe80a887505c3bd2c7f07ed362b6ed041968370073c40a98496e6a737
   languageName: node
   linkType: hard
 
