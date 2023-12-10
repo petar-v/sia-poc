@@ -1,6 +1,6 @@
 import ProjectData from "@/lib/projectData";
-import dummyResp from "./dummy/dummyResp.json";
-import LLMPrompt from "./llmPrompt";
+import dummyResp from "./dummyResp.json";
+import LLMPrompt from "../llmPrompt";
 
 export const prompt = async (
     prompt: LLMPrompt,

@@ -39,6 +39,7 @@ export default function SocketHome({
     session,
 }: InferGetStaticPropsType<typeof getServerSideProps>) {
     const [input, setInput] = useState("");
+    const [reply, setReply] = useState("");
 
     const socketInitializer = useCallback(async () => {
         await fetch("/api/socket"); // bootstrap the socket
@@ -56,12 +57,12 @@ export default function SocketHome({
 
         socket.on("connect_error", (e) => {
             console.error("socket error", e);
-            setInput(`Socket error ${e.message}`);
+            setReply(`Socket error ${e.message}`);
         });
 
-        socket.on("update-input", (msg) => {
+        socket.on("bot-reply", (msg) => {
             console.log("Received", msg);
-            setInput(msg);
+            setReply(msg);
         });
 
         return socket;
@@ -72,16 +73,19 @@ export default function SocketHome({
     }, [socketInitializer]);
 
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log("On change", e.target.value);
+        setInput(e.target.value);
+    };
+    const onSubmit = () => {
         if (socket !== null) {
-            socket.emit("input-change", e.target.value);
+            socket.emit("prompt", input);
         }
     };
     return (
         <main>
             <p>Initial session: {session.id}</p>
-            <input placeholder="Type something" onChange={onChangeHandler} />
-            <p>{input}</p>
+            <input placeholder="Ask something" onChange={onChangeHandler} />
+            <button onClick={onSubmit}>Submit</button>
+            <p>{reply}</p>
         </main>
     );
 }

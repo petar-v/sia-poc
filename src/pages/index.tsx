@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { wrapper } from "@/redux/store";
 import { SocketProvider } from "@/lib/providers/socketProvider";
@@ -13,10 +13,10 @@ import { selectBackendState, setBackend } from "@/redux/store/backendSlice";
 import Header from "@/components/header";
 import Wizard from "@/components/wizard";
 
-import { SessionData, sessionOptions } from "@/lib/session";
-import { getIronSession } from "iron-session";
+import { SessionData } from "@/lib/session";
 import { GetServerSideProps, InferGetStaticPropsType } from "next";
 import { v4 as uuidv4 } from "uuid";
+import { DEFAULT_BACKEND, options } from "@/llm-backend/backend";
 
 // TODO: Extract this to a middleware
 export const getServerSideProps = (async (context) => {
@@ -41,22 +41,9 @@ export const getServerSideProps = (async (context) => {
     session: SessionData;
 }>;
 
-const defaultBackend = "openai";
-
 const App = () => {
     const backend = useAppSelector(selectBackendState);
     const dispatch = useAppDispatch();
-
-    const options = [
-        { value: "openai", label: "ChatGPT 3.5 Turbo" },
-        { value: "dummy", label: "Dummy offline data" },
-    ];
-
-    useEffect(() => {
-        // switch to openAI backend by default
-        dispatch(setBackend(defaultBackend));
-    }, [dispatch]);
-
     return (
         <>
             <Header>
@@ -72,8 +59,8 @@ const App = () => {
                     </Button>
                     <Select
                         options={options}
-                        defaultValue={backend.name}
-                        value={backend.name}
+                        defaultValue={DEFAULT_BACKEND}
+                        value={backend}
                         onChange={(value: "openai" | "dummy") => {
                             console.log("Backend set to", value);
                             dispatch(setBackend(value));

@@ -9,9 +9,6 @@ type RequestData = {
     sow: string;
 };
 
-const openAIkey = process.env.OPENAI_API_KEY || "";
-const openAIorg = process.env.OPENAI_ORG_ID || "";
-
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<ResponseData>,

@@ -1,16 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppState } from "./";
-
-import Backend from "@/llm-backend/backend";
+import { DEFAULT_BACKEND, backend } from "@/llm-backend/backend";
 
 export interface BackendState {
-    backend: Backend;
+    backend: backend;
 }
 
 const initialState: BackendState = {
-    backend: {
-        name: "dummy",
-    },
+    backend: DEFAULT_BACKEND,
 };
 
 export const backendSlice = createSlice({
