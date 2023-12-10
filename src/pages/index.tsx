@@ -1,119 +1,45 @@
-import React, { useCallback, useEffect } from "react";
-import { Provider } from "react-redux";
+import React, { useEffect } from "react";
+import { Provider as ReduxProvider } from "react-redux";
 import { wrapper } from "@/redux/store";
+import { SocketProvider } from "@/lib/providers/socketProvider";
 
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-import { Select, Button, Space, Spin } from "antd";
+import { Select, Button, Space } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
 
 import { selectBackendState, setBackend } from "@/redux/store/backendSlice";
-import {
-    selectSoW,
-    setStatementOfWork,
-    selectProjectPlan,
-    setProjectPlan,
-    selectProjectStage,
-    setAwaitingBackend,
-    ProjectStage,
-    selectIssue,
-    setIssue,
-} from "@/redux/store/projectSlice";
-
-import Backend, { getBackend } from "@/llm-backend/backend";
-import ProjectData, { Issue } from "@/lib/projectData";
 
 import Header from "@/components/header";
-import SoWInput from "@/components/sowInput";
-import ProjectPlan from "@/components/projectPlan";
-import ProgressBar from "@/components/progressBar";
-import IssueDisplay from "@/components/issueDisplay";
+import Wizard from "@/components/wizard";
 
-const AppBody = () => {
-    const dispatch = useAppDispatch();
+import { SessionData, sessionOptions } from "@/lib/session";
+import { getIronSession } from "iron-session";
+import { GetServerSideProps, InferGetStaticPropsType } from "next";
+import { v4 as uuidv4 } from "uuid";
 
-    const backend: Backend = useAppSelector(selectBackendState);
-    const statementOfWork = useAppSelector(selectSoW);
-    const projectPlan = useAppSelector(selectProjectPlan);
-    const issue = useAppSelector(selectIssue);
+// TODO: Extract this to a middleware
+export const getServerSideProps = (async (context) => {
+    // const session = await getIronSession<SessionData>(
+    //     context.req,
+    //     context.res,
+    //     sessionOptions,
+    // );
 
-    const projectStage = useAppSelector(selectProjectStage);
+    const session: SessionData = { id: "" };
 
-    // FIXME: move this to Redux
-    const submitPrompt = useCallback(
-        async (
-            sow: string,
-            onPartialResponse: (response: ProjectData) => void,
-        ): Promise<ProjectData | null> => {
-            const call = {
-                prompt: sow,
-                onDataChunk: onPartialResponse,
-                onFinish: function (projectData: ProjectData): void {
-                    console.log("finished project data", projectData);
-                },
-                onIssue: function (issue: Issue): void {
-                    dispatch(setIssue(issue));
-                },
-            };
-            return getBackend(backend)(call);
-        },
-        [backend, dispatch],
-    );
+    if (!session.id) {
+        // TODO: create a login page with some context or whatever
+        // Currently, I'm just generating a session ID for each new session.
+        // FIXME: Better session management
+        session.id = uuidv4();
+        // await session.save();
+    }
 
-    const onSubmit = (sow: string) => {
-        dispatch(setStatementOfWork(sow));
-        dispatch(setAwaitingBackend(true));
-        window.scrollTo(0, 0);
-        submitPrompt(sow, (incompleteProjectData: ProjectData) => {
-            dispatch(setProjectPlan({ ...incompleteProjectData }));
-        }).then((resp) => {
-            dispatch(setAwaitingBackend(false));
-            if (resp) {
-                console.log("incomplete data", resp);
-                dispatch(setProjectPlan({ ...resp }));
-            }
-            // TODO: handle edge case
-        });
-    };
-
-    const view = () => {
-        if (issue) {
-            return <IssueDisplay {...issue} />;
-        }
-
-        if (projectPlan) {
-            return (
-                <ProjectPlan
-                    data={projectPlan}
-                    loading={projectStage === ProjectStage.PROCESSING}
-                />
-            );
-        }
-
-        if (statementOfWork) {
-            return (
-                <div className="mt-5">
-                    <Spin tip="Loading information..." size="large">
-                        <div className="content" />
-                    </Spin>
-                </div>
-            );
-        }
-
-        return (
-            <>
-                <SoWInput onSubmit={onSubmit} />
-            </>
-        );
-    };
-
-    return (
-        <>
-            <ProgressBar stage={projectStage} />
-            {view()}
-        </>
-    );
-};
+    return { props: { session } };
+}) satisfies GetServerSideProps<{
+    session: SessionData;
+}>;
 
 const defaultBackend = "openai";
 
@@ -156,18 +82,23 @@ const App = () => {
                 </Space>
             </Header>
             <main className="flex flex-col p-16">
-                <AppBody />
+                <Wizard />
             </main>
         </>
     );
 };
 
-const WrappedApp = (appProps: {}) => {
-    const { store, props } = wrapper.useWrappedStore(appProps);
+// Note: if the session changes, this will reconnect to the websocket
+const WrappedApp = ({
+    session,
+}: InferGetStaticPropsType<typeof getServerSideProps>) => {
+    const { store, props } = wrapper.useWrappedStore({});
     return (
-        <Provider store={store}>
-            <App {...props} />
-        </Provider>
+        <ReduxProvider store={store}>
+            <SocketProvider session={session}>
+                <App {...props} />
+            </SocketProvider>
+        </ReduxProvider>
     );
 };
 
