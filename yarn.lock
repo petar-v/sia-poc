@@ -1247,6 +1247,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:^9":
+  version: 9.0.7
+  resolution: "@types/uuid@npm:9.0.7"
+  checksum: c7321194aeba9ea173efd1e721403bdf4e7ae6945f8f8cdbc87c791f4b505ccf3dbc4a8883d90b394ef13b7c2dc778045792b05dbb23b3c746f8ea347804d448
+  languageName: node
+  linkType: hard
+
 "@types/warning@npm:^3.0.0":
   version: 3.0.2
   resolution: "@types/warning@npm:3.0.2"
@@ -8451,6 +8458,7 @@ __metadata:
     "@types/node": "npm:^20.8.10"
     "@types/react": "npm:^18.2.34"
     "@types/react-dom": "npm:^18.2.14"
+    "@types/uuid": "npm:^9"
     antd: "npm:^5.10.3"
     autoprefixer: "npm:^10.4.16"
     bootstrap: "npm:^5.3.2"
@@ -8484,6 +8492,7 @@ __metadata:
     stylelint-prettier: "npm:^4.0.2"
     tailwindcss: "npm:^3.3.5"
     typescript: "npm:^5.2.2"
+    uuid: "npm:^9.0.1"
     vercel: "npm:^32.5.0"
     webpack: "npm:^5.89.0"
     wrangler: "npm:^3.15.0"
@@ -9722,6 +9731,15 @@ __metadata:
   bin:
     uuid: ./bin/uuid
   checksum: 3834a826020a23fca314116c2becddc7f5d756b0280d630b58a65e700afeefd89d78ae97ddbdea5dcad497666cda6e9b0390ba74508e650d43d83a32d1e7cd19
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "uuid@npm:9.0.1"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 9d0b6adb72b736e36f2b1b53da0d559125ba3e39d913b6072f6f033e0c87835b414f0836b45bcfaf2bdf698f92297fea1c3cc19b0b258bc182c9c43cc0fab9f2
   languageName: node
   linkType: hard
 
