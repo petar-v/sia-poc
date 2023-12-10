@@ -3,7 +3,7 @@ import { ConfigProvider, Result, Divider, List, Checkbox } from "antd";
 
 import ReloadButton from "@/components/reloadButton";
 
-import { Issue } from "@/projectData";
+import { Issue } from "@/lib/projectData";
 
 type IssueDisplayProps = Issue & {};
 

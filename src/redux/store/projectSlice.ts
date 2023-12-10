@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppState } from "./";
-import ProjectData, { Issue } from "@/projectData";
+import ProjectData, { Issue } from "@/lib/projectData";
 
 export interface ProjectState {
     statementOfWork: string | null;

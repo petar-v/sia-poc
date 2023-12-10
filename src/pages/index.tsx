@@ -1,91 +1,174 @@
-// import App from "@/App";
-import { useEffect, useState, useCallback, ChangeEvent } from "react";
-// TODO: use react-use-websocket
+import React, { useCallback, useEffect } from "react";
+import { Provider } from "react-redux";
+import { wrapper } from "@/redux/store";
 
-import { v4 as uuidv4 } from "uuid";
-import type { InferGetStaticPropsType } from "next";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-import { getIronSession } from "iron-session";
-import { SessionData, sessionOptions } from "@/lib/session";
-import type { GetServerSideProps } from "next";
+import { Select, Button, Space, Spin } from "antd";
+import { ReloadOutlined } from "@ant-design/icons";
 
-import io from "socket.io-client";
-import type { Socket } from "socket.io-client";
+import { selectBackendState, setBackend } from "@/redux/store/backendSlice";
+import {
+    selectSoW,
+    setStatementOfWork,
+    selectProjectPlan,
+    setProjectPlan,
+    selectProjectStage,
+    setAwaitingBackend,
+    ProjectStage,
+    selectIssue,
+    setIssue,
+} from "@/redux/store/projectSlice";
 
-// TODO: Extract this to a middleware
-export const getServerSideProps = (async (context) => {
-    const session = await getIronSession<SessionData>(
-        context.req,
-        context.res,
-        sessionOptions,
+import Backend, { getBackend } from "@/llm-backend/backend";
+import ProjectData, { Issue } from "@/lib/projectData";
+
+import Header from "@/components/header";
+import SoWInput from "@/components/sowInput";
+import ProjectPlan from "@/components/projectPlan";
+import ProgressBar from "@/components/progressBar";
+import IssueDisplay from "@/components/issueDisplay";
+
+const AppBody = () => {
+    const dispatch = useAppDispatch();
+
+    const backend: Backend = useAppSelector(selectBackendState);
+    const statementOfWork = useAppSelector(selectSoW);
+    const projectPlan = useAppSelector(selectProjectPlan);
+    const issue = useAppSelector(selectIssue);
+
+    const projectStage = useAppSelector(selectProjectStage);
+
+    // FIXME: move this to Redux
+    const submitPrompt = useCallback(
+        async (
+            sow: string,
+            onPartialResponse: (response: ProjectData) => void,
+        ): Promise<ProjectData | null> => {
+            const call = {
+                prompt: sow,
+                onDataChunk: onPartialResponse,
+                onFinish: function (projectData: ProjectData): void {
+                    console.log("finished project data", projectData);
+                },
+                onIssue: function (issue: Issue): void {
+                    dispatch(setIssue(issue));
+                },
+            };
+            return getBackend(backend)(call);
+        },
+        [backend, dispatch],
     );
 
-    if (!session.id) {
-        // TODO: create a login page with some context or whatever
-        // Currently, I'm just generating a session ID for each new session.
-        session.id = uuidv4();
-        await session.save();
-    }
-
-    return { props: { session } };
-}) satisfies GetServerSideProps<{
-    session: SessionData;
-}>;
-
-let socket: Socket | null = null;
-
-// TODO: add next/Suspenses to the app
-export default function SocketHome({
-    session,
-}: InferGetStaticPropsType<typeof getServerSideProps>) {
-    const [input, setInput] = useState("");
-
-    const socketInitializer = useCallback(async () => {
-        await fetch("/api/socket"); // bootstrap the socket
-
-        const socket = io({
-            withCredentials: true,
-            auth: (cb) => {
-                cb(session); // send the current session to the websocket server initially once.
-            },
+    const onSubmit = (sow: string) => {
+        dispatch(setStatementOfWork(sow));
+        dispatch(setAwaitingBackend(true));
+        window.scrollTo(0, 0);
+        submitPrompt(sow, (incompleteProjectData: ProjectData) => {
+            dispatch(setProjectPlan({ ...incompleteProjectData }));
+        }).then((resp) => {
+            dispatch(setAwaitingBackend(false));
+            if (resp) {
+                console.log("incomplete data", resp);
+                dispatch(setProjectPlan({ ...resp }));
+            }
+            // TODO: handle edge case
         });
+    };
 
-        socket.on("connect", () => {
-            console.log("connected");
-        });
+    const view = () => {
+        if (issue) {
+            return <IssueDisplay {...issue} />;
+        }
 
-        socket.on("connect_error", (e) => {
-            console.error("socket error", e);
-            setInput(`Socket error ${e.message}`);
-        });
+        if (projectPlan) {
+            return (
+                <ProjectPlan
+                    data={projectPlan}
+                    loading={projectStage === ProjectStage.PROCESSING}
+                />
+            );
+        }
 
-        socket.on("update-input", (msg) => {
-            console.log("Received", msg);
-            setInput(msg);
-        });
+        if (statementOfWork) {
+            return (
+                <div className="mt-5">
+                    <Spin tip="Loading information..." size="large">
+                        <div className="content" />
+                    </Spin>
+                </div>
+            );
+        }
 
-        return socket;
-    }, []);
+        return (
+            <>
+                <SoWInput onSubmit={onSubmit} />
+            </>
+        );
+    };
+
+    return (
+        <>
+            <ProgressBar stage={projectStage} />
+            {view()}
+        </>
+    );
+};
+
+const defaultBackend = "openai";
+
+const App = () => {
+    const backend = useAppSelector(selectBackendState);
+    const dispatch = useAppDispatch();
+
+    const options = [
+        { value: "openai", label: "ChatGPT 3.5 Turbo" },
+        { value: "dummy", label: "Dummy offline data" },
+    ];
 
     useEffect(() => {
-        socketInitializer().then((s) => (socket = s));
-    }, [socketInitializer]);
+        // switch to openAI backend by default
+        dispatch(setBackend(defaultBackend));
+    }, [dispatch]);
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log("On change", e.target.value);
-        if (socket !== null) {
-            socket.emit("input-change", e.target.value);
-        }
-    };
     return (
-        <main>
-            <p>Initial session: {session.id}</p>
-            <input placeholder="Type something" onChange={onChangeHandler} />
-            <p>{input}</p>
-        </main>
+        <>
+            <Header>
+                <Space wrap>
+                    <Button
+                        type="dashed"
+                        icon={<ReloadOutlined />}
+                        onClick={() => {
+                            location.reload();
+                        }}
+                    >
+                        Reload
+                    </Button>
+                    <Select
+                        options={options}
+                        defaultValue={backend.name}
+                        value={backend.name}
+                        onChange={(value: "openai" | "dummy") => {
+                            console.log("Backend set to", value);
+                            dispatch(setBackend(value));
+                        }}
+                    />
+                </Space>
+            </Header>
+            <main className="flex flex-col p-16">
+                <AppBody />
+            </main>
+        </>
     );
-}
+};
 
-function Home({ session }: InferGetStaticPropsType<typeof getServerSideProps>) {
-    return <>todo</>;
-}
+const WrappedApp = (appProps: {}) => {
+    const { store, props } = wrapper.useWrappedStore(appProps);
+    return (
+        <Provider store={store}>
+            <App {...props} />
+        </Provider>
+    );
+};
+
+export default WrappedApp;

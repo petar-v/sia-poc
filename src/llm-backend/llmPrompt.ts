@@ -1,4 +1,4 @@
-import ProjectData, { Task, ProjectInfo, Issue } from "@/projectData";
+import ProjectData, { Task, ProjectInfo, Issue } from "@/lib/projectData";
 
 type LLMPrompt = {
     prompt: string;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ProjectData from "@/projectData";
+import ProjectData from "@/lib/projectData";
 
 import { Card, Space, Descriptions, Modal, Skeleton, Typography } from "antd";
 import type { DescriptionsProps } from "antd";

@@ -1,4 +1,4 @@
-import ProjectData from "@/projectData";
+import ProjectData from "@/lib/projectData";
 import dummyResp from "./dummy/dummyResp.json";
 import LLMPrompt from "./llmPrompt";
 
