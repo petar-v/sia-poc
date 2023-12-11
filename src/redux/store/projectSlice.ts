@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AppState } from "./";
 import ProjectData, { Issue } from "@/lib/projectData";
 
@@ -32,11 +32,6 @@ export const projectSlice = createSlice({
         setStatementOfWork(state, action) {
             state.statementOfWork = action.payload;
         },
-
-        // FIXME: use thunks: https://redux.js.org/tutorials/essentials/part-5-async-logic
-        setAwaitingBackend(state, action) {
-            state.awaitingBackend = action.payload;
-        },
         setProjectPlan(state, action) {
             state.projectPlan = action.payload;
         },
@@ -44,14 +39,36 @@ export const projectSlice = createSlice({
             state.issue = action.payload;
         },
     },
+    extraReducers(builder) {
+        builder
+            .addCase(setSoW.pending, (state, action) => {
+                state.awaitingBackend = true;
+            })
+            .addCase(setSoW.fulfilled, (state, action) => {
+                state.awaitingBackend = false;
+            })
+            .addCase(setSoW.rejected, (state, action) => {
+                console.error(action.error.message);
+            });
+    },
 });
 
-export const {
-    setStatementOfWork,
-    setAwaitingBackend,
-    setProjectPlan,
-    setIssue,
-} = projectSlice.actions;
+const { setStatementOfWork, setProjectPlan, setIssue } = projectSlice.actions;
+
+export const setSoW = createAsyncThunk(
+    "project/setSoW",
+    async (sow: string, thunkAPI) => {
+        thunkAPI.dispatch(setStatementOfWork(sow));
+        console.log("PROMPTING THE SOW");
+        const issue: Issue = {
+            mainIssue: "No socket here",
+            feedback:
+                "I need to create a websocket that is accessible to an async thunk",
+            thingsToFix: ["Socket in thunk", "Provider spaghetti", "????"],
+        };
+        setIssue(issue);
+    },
+);
 
 export const selectSoW = (state: AppState) =>
     state[projectSlice.name].statementOfWork;

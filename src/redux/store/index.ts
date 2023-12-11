@@ -38,7 +38,6 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 >;
 
 export const store = makeStore(); // FIXME: get rid of this and use types inference instead
-// // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 
 export const wrapper = createWrapper<AppStore>(makeStore);

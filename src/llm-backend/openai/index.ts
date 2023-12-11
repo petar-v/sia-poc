@@ -25,7 +25,6 @@ function createChatSession(apiKey: string): ChatSession {
 
         return new ReadableStream({
             start(controller) {
-                // on chunk from gpt
                 chatGPTStream
                     .on("chunk", (chunk) => {
                         controller.enqueue(

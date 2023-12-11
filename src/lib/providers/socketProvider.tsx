@@ -21,6 +21,7 @@ const SocketProvider = ({
         if (socketUp) {
             return;
         }
+        console.log("Poking socket");
         fetch("/api/socket").then(() => {
             setSocketUp(true);
         });
