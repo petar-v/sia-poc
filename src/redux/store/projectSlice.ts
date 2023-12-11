@@ -43,9 +43,13 @@ export const projectSlice = createSlice({
         builder
             .addCase(setSoW.pending, (state, action) => {
                 state.awaitingBackend = true;
+
+                return state;
             })
             .addCase(setSoW.fulfilled, (state, action) => {
                 state.awaitingBackend = false;
+
+                return state;
             })
             .addCase(setSoW.rejected, (state, action) => {
                 console.error(action.error.message);
