@@ -13,15 +13,15 @@ export const hookUpSocketEventsToStore = (
 ) => {
     socket.on("project-plan", (json: any) => {
         const state = getState();
-
-        const projectPlan = selectProjectPlan(state);
+        const projectPlan = selectProjectPlan(state) || {
+            tasks: [],
+        };
 
         if (json.type === "Task") {
-            const tasks = projectPlan?.tasks || [];
             dispatch(
                 setProjectPlan({
                     ...projectPlan,
-                    tasks: [...tasks, json as Task],
+                    tasks: [...projectPlan.tasks, json as Task],
                 }),
             );
         } else if (json.type === "Issue") {
