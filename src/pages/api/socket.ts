@@ -62,10 +62,11 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
         socket.join(sessionID);
 
         if (chatSessions[sessionID] === undefined) {
-            chatSessions[sessionID] = createChatSession(openAIkey);
+            chatSessions[sessionID] = createChatSession(openAIkey, openAIorg);
         }
         const chatSession = chatSessions[sessionID];
-        socket.on("prompt", async (message, callback) => {
+        // TODO: add constants for the events
+        socket.on("prompt", async (message) => {
             const stream = await chatSession.prompt(message);
             const reader = stream.getReader();
             while (true) {
@@ -76,7 +77,19 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
                 socket.emit("reply", value);
             }
         });
-
+        socket.on("sow", async (sow) => {
+            const stream = await chatSession.statementOfWorkToProjectPlan(sow);
+            const reader = stream.getReader();
+            while (true) {
+                const { done, value } = await reader.read();
+                console.log("EMISSION", value, done);
+                console.log("");
+                if (done) {
+                    break;
+                }
+                socket.emit("project-plan", value);
+            }
+        });
         // TODO: kill the chatgpt session once the user destroys the session.
     });
 

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AppState } from "./";
+import { AppState, ThunkApi } from "./";
 import ProjectData, { Issue } from "@/lib/projectData";
 
 export interface ProjectState {
@@ -43,12 +43,10 @@ export const projectSlice = createSlice({
         builder
             .addCase(setSoW.pending, (state, action) => {
                 state.awaitingBackend = true;
-
                 return state;
             })
             .addCase(setSoW.fulfilled, (state, action) => {
                 state.awaitingBackend = false;
-
                 return state;
             })
             .addCase(setSoW.rejected, (state, action) => {
@@ -57,20 +55,21 @@ export const projectSlice = createSlice({
     },
 });
 
-const { setStatementOfWork, setProjectPlan, setIssue } = projectSlice.actions;
+const { setStatementOfWork } = projectSlice.actions;
 
-export const setSoW = createAsyncThunk(
+export const { setProjectPlan, setIssue } = projectSlice.actions;
+
+export const setSoW = createAsyncThunk<void, string, ThunkApi>(
     "project/setSoW",
     async (sow: string, thunkAPI) => {
         thunkAPI.dispatch(setStatementOfWork(sow));
-        console.log("PROMPTING THE SOW");
-        const issue: Issue = {
-            mainIssue: "No socket here",
-            feedback:
-                "I need to create a websocket that is accessible to an async thunk",
-            thingsToFix: ["Socket in thunk", "Provider spaghetti", "????"],
-        };
-        setIssue(issue);
+
+        const socket = thunkAPI.extra;
+        console.log("PROMPT SOW");
+        socket.emit("sow", sow);
+        socket.on("project-plan", (value) => {
+            console.log("RECEIVED PP", value);
+        });
     },
 );
 

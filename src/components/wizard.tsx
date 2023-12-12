@@ -26,7 +26,9 @@ const Wizard = () => {
     const projectStage = useAppSelector(selectProjectStage);
 
     const onSubmit = (sow: string) => {
-        dispatch(setSoW(sow));
+        dispatch(setSoW(sow)).then(() => {
+            console.log("SOW dispatched");
+        });
         window.scrollTo(0, 0);
     };
 
