@@ -25,11 +25,9 @@ const reducer: typeof combinedReducer = (state, action) => {
     }
 };
 
-const socket = createSocket();
-type SocketType = typeof socket;
-
-const makeStore = () =>
-    configureStore({
+const makeStore = () => {
+    const socket = createSocket();
+    const store = configureStore({
         reducer,
         devTools: process.env.NODE_ENV !== "production",
         middleware: (getDefaultMiddleware) =>
@@ -41,7 +39,14 @@ const makeStore = () =>
             }),
     });
 
+    return store;
+};
+
+type SocketType = ReturnType<typeof createSocket>;
+
+// Infer the type of makeStore
 export type AppStore = ReturnType<typeof makeStore>;
+export type AppDispatch = AppStore["dispatch"];
 export type AppState = ReturnType<AppStore["getState"]>;
 export type AppThunk<ReturnType = void> = ThunkAction<
     ReturnType,
@@ -49,13 +54,9 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     SocketType,
     Action
 >;
-
 export type ThunkApi = {
     extra: SocketType;
     state: AppState;
 };
-
-export const store = makeStore(); // FIXME: get rid of this and use types inference instead
-export type AppDispatch = typeof store.dispatch;
 
 export const wrapper = createWrapper<AppStore>(makeStore);

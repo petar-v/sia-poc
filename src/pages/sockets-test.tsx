@@ -65,7 +65,7 @@ export default function SocketHome({
         });
 
         return socket;
-    }, []);
+    }, [session]);
 
     useEffect(() => {
         socketInitializer().then((s) => (socket = s));

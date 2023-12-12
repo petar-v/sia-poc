@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { AppState, ThunkApi } from "./";
 import { SessionData } from "@/lib/session";
-import { store } from "./index";
 
 export interface SocketState {
     isConnected: boolean;
