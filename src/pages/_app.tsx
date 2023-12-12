@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import type { AppProps } from "next/app";
-import { wrapper } from "@/redux/store";
+import { AppStore, wrapper } from "@/redux/store";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -14,7 +14,12 @@ function MyApp({
     session,
     ...rest
 }: AppProps & { session: SessionData }) {
-    const { store, props } = wrapper.useWrappedStore(rest);
+    const storeRef = useRef<{ store: AppStore; props: any }>();
+    if (!storeRef.current) {
+        // Create the store instance the first time this renders
+        storeRef.current = wrapper.useWrappedStore(rest);
+    }
+    const { store, props } = storeRef?.current;
     const { pageProps } = props;
 
     useEffect(() => {
