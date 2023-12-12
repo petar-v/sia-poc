@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { AppState } from "./";
-import { DEFAULT_BACKEND, backend } from "@/llm-backend/backend";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { AppState, ThunkApi } from "./";
+import { DEFAULT_BACKEND, Backend } from "@/llm-backend/backend";
 
 export interface BackendState {
-    backend: backend;
+    backend: Backend;
 }
 
 const initialState: BackendState = {
@@ -20,7 +20,14 @@ export const backendSlice = createSlice({
     },
 });
 
-export const { setBackend } = backendSlice.actions;
+export const setBackend = createAsyncThunk<void, Backend, ThunkApi>(
+    "socket/initializeSocket",
+    async (backend: Backend, { extra, dispatch }) => {
+        const socket = extra;
+        socket.emit("backend-switch", backend);
+        dispatch(backendSlice.actions.setBackend(backend));
+    },
+);
 
 export const selectBackendState = (state: AppState) =>
     state[backendSlice.name].backend;

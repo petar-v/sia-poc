@@ -1,12 +1,12 @@
-import { ChatSession } from "./chatSession";
+import { ChatSession, Message } from "./chatSession";
 import { createChatSession as dummyChatSession } from "./dummy";
 import { createChatSession as openAiChatSession } from "./openai";
 
-export type backend = "openai" | "dummy";
-export const DEFAULT_BACKEND = "openai";
+export type Backend = "openai" | "dummy";
+export const DEFAULT_BACKEND: Backend = "openai";
 
 type BackendBase = {
-    name: backend;
+    name: Backend;
 };
 
 export interface OpenAIBackend extends BackendBase {
@@ -19,17 +19,23 @@ export interface DummyBackend extends BackendBase {
     name: "dummy";
 }
 
-export const options: { value: backend; label: string }[] = [
+export const options: { value: Backend; label: string }[] = [
     { value: "openai", label: "ChatGPT 3.5 Turbo" },
     { value: "dummy", label: "Dummy offline data" },
 ];
 
 export const createChatSessionFromBackend = (
     backend: BackendBase,
+    history?: Message[],
 ): ChatSession => {
     if (backend.name === "openai") {
         const openaiBackend = backend as OpenAIBackend;
-        return openAiChatSession(openaiBackend.apiKey, openaiBackend.orgKey);
+        const session = openAiChatSession(
+            openaiBackend.apiKey,
+            openaiBackend.orgKey,
+            history,
+        );
+        return session;
     }
-    return dummyChatSession();
+    return dummyChatSession(history);
 };

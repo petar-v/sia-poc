@@ -7,7 +7,12 @@ import { Server } from "socket.io";
 import { SessionData } from "@/lib/session";
 import { ChatSession } from "@/llm-backend/chatSession";
 import { createChatSessionFromBackend } from "@/llm-backend/backend";
-import { DummyBackend, OpenAIBackend } from "../../llm-backend/backend";
+import {
+    DummyBackend,
+    OpenAIBackend,
+    Backend,
+    DEFAULT_BACKEND,
+} from "../../llm-backend/backend";
 
 interface SocketServer extends HTTPServer {
     io?: IOServer | undefined;
@@ -71,12 +76,31 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
         // TODO: create session based on preferred backend
         if (chatSessions[sessionID] === undefined) {
-            chatSessions[sessionID] =
-                createChatSessionFromBackend(dummyBackend);
+            chatSessions[sessionID] = createChatSessionFromBackend(
+                DEFAULT_BACKEND === "openai" ? openAiBackend : dummyBackend,
+            );
         }
-        const chatSession = chatSessions[sessionID];
+        const getChatSession = () => chatSessions[sessionID];
         // TODO: add constants for the events
+        socket.on("backend-switch", (backendString) => {
+            const chatSession = getChatSession();
+            const backend = backendString as Backend;
+            if (chatSession.backend === backend) {
+                console.log(
+                    `Already using backend ${backend} for session; ${sessionID}`,
+                );
+                return;
+            }
+            console.log(`Switching backend for ${sessionID} to ${backend}`);
+            const messagesHistory = chatSession.getMessages();
+            chatSessions[sessionID] = createChatSessionFromBackend(
+                backend === "openai" ? openAiBackend : dummyBackend,
+                messagesHistory,
+            );
+        });
+
         socket.on("prompt", async (message) => {
+            const chatSession = getChatSession();
             const stream = await chatSession.prompt(message);
             const reader = stream.getReader();
             while (true) {
@@ -88,7 +112,9 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
             }
             socket.emit("done", "reply");
         });
+
         socket.on("sow", async (sow) => {
+            const chatSession = getChatSession();
             const stream = await chatSession.statementOfWorkToProjectPlan(sow);
             const reader = stream.getReader();
             while (true) {

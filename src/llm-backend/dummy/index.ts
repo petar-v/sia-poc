@@ -2,8 +2,9 @@ import { ChatSession, Message } from "../chatSession";
 import dummyResponse from "./dummyResp.ndjson";
 
 const defaultAnswer = "I'm sorry, I am just a dummy and don't know anything.";
-export function createChatSession(): ChatSession {
-    const messages: Message[] = [];
+
+export function createChatSession(history: Message[] = []): ChatSession {
+    const messages: Message[] = history;
 
     const prompt = async (message: string): Promise<ReadableStream> => {
         messages.push({ role: "user", content: message });
@@ -25,7 +26,6 @@ export function createChatSession(): ChatSession {
         });
         return new ReadableStream({
             async start(controller) {
-                console.log("Streaming ", dummyResponse);
                 `${dummyResponse}`.split("\n").forEach((line) => {
                     try {
                         controller.enqueue(JSON.parse(line));
@@ -41,6 +41,7 @@ export function createChatSession(): ChatSession {
 
     return {
         prompt,
+        backend: "dummy",
         getMessages: () => messages,
         statementOfWorkToProjectPlan,
     };

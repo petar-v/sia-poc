@@ -1,18 +1,27 @@
 import OpenAI from "openai";
 
 import promptContext from "./promptText.txt";
-import { ChatSession } from "../chatSession";
+import { ChatSession, Message } from "../chatSession";
 
 const model = "gpt-3.5-turbo";
 
-export function createChatSession(apiKey: string, orgKey: string): ChatSession {
+export function createChatSession(
+    apiKey: string,
+    orgKey: string,
+    history: Message[] = [],
+): ChatSession {
     const openai = new OpenAI({
         apiKey: apiKey,
         organization: orgKey,
         dangerouslyAllowBrowser: true,
     });
     const params: OpenAI.Chat.ChatCompletionCreateParams = {
-        messages: [],
+        // FIXME: Fix role conversion
+        messages: history.map((h) => ({
+            ...h,
+            role: h.role === "user" ? "user" : "assistant",
+            name: "",
+        })), // TODO: make message type conversion helpers
         stream: true,
         model,
     };
@@ -89,6 +98,7 @@ export function createChatSession(apiKey: string, orgKey: string): ChatSession {
     };
 
     return {
+        backend: "openai",
         getMessages: () =>
             params.messages.map((msg) => ({
                 role: msg.role,
