@@ -1,13 +1,13 @@
 import React from "react";
-import { Button, Input, Form, Space, Row, Card, Avatar } from "antd";
+import { Button, Input, Form, Space, Card, Avatar } from "antd";
 import { SendOutlined, UserOutlined, RobotOutlined } from "@ant-design/icons";
 
-import { Message } from "@/llm-backend/chatSession";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
     selectIsAwaitingReply,
     selectMessages,
     prompt,
+    ChatMessage,
 } from "@/redux/store/messagesSlice";
 
 export type ChatProps = {
@@ -18,24 +18,31 @@ type FieldType = {
     message: string;
 };
 
-function MessageDisplay({ message }: { message: Message }) {
+const UserAvatar = (
+    <Avatar
+        style={{ backgroundColor: "#fde3cf", color: "#f56a00" }}
+        icon={<UserOutlined />}
+    >
+        User
+    </Avatar>
+);
+
+const DummyAIAvatar = <Avatar icon={<RobotOutlined />}>Dummy Assistant</Avatar>;
+
+const OpenAIAvatar = (
+    <Avatar style={{ backgroundColor: "#87d068" }} icon={<RobotOutlined />}>
+        Smart Assistant
+    </Avatar>
+);
+
+function MessageDisplay({ message }: { message: ChatMessage }) {
     const title = message.role === "user" ? "You" : "Assistant";
     const avatar =
-        message.role === "assistant" ? (
-            <Avatar
-                style={{ backgroundColor: "#87d068" }}
-                icon={<RobotOutlined />}
-            >
-                Assistant
-            </Avatar>
-        ) : (
-            <Avatar
-                style={{ backgroundColor: "#fde3cf", color: "#f56a00" }}
-                icon={<UserOutlined />}
-            >
-                User
-            </Avatar>
-        );
+        message.role === "assistant"
+            ? message.origin === "openai"
+                ? OpenAIAvatar
+                : DummyAIAvatar
+            : UserAvatar;
 
     return (
         <Card bordered={true} size="small" style={{ width: "100%" }}>
