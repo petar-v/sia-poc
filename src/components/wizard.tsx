@@ -11,10 +11,11 @@ import {
 } from "@/redux/store/projectSlice";
 
 import SoWInput from "@/components/sowInput";
-import ProjectPlan from "@/components/projectPlan";
-import ProgressBar from "@/components/progressBar";
-import IssueDisplay from "@/components/issueDisplay";
-import { Spin } from "antd";
+import ProjectPlan from "@/components/planner/projectPlan";
+import ProgressBar from "@/components/elements/progressBar";
+import IssueDisplay from "@/components/elements/issueDisplay";
+import { Divider, Spin } from "antd";
+import Chat from "./chat/chat";
 
 const Wizard = () => {
     const dispatch = useAppDispatch();
@@ -37,11 +38,16 @@ const Wizard = () => {
         }
 
         if (projectPlan) {
+            // TODO: make this responsive
             return (
-                <ProjectPlan
-                    data={projectPlan}
-                    loading={projectStage === ProjectStage.PROCESSING}
-                />
+                <>
+                    <ProjectPlan
+                        data={projectPlan}
+                        loading={projectStage === ProjectStage.PROCESSING}
+                    />
+                    {/* <Divider orientation="left">Ask SIA</Divider>
+                    <Chat disabled={projectStage === ProjectStage.PROCESSING} /> */}
+                </>
             );
         }
 

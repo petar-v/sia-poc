@@ -9,9 +9,7 @@ export type ProjectPlanProps = {
     loading: boolean;
 };
 
-export default function ProjectPlan({ data, loading }: ProjectPlanProps) {
-    const [taskOpen, setTaskOpen] = useState(-1);
-
+const descriptionPropsFromProjectPlan = (data: ProjectData) => {
     const items: DescriptionsProps["items"] = [
         {
             key: "1",
@@ -34,6 +32,14 @@ export default function ProjectPlan({ data, loading }: ProjectPlanProps) {
             children: data.info?.risks,
         },
     ];
+    return items;
+};
+
+// TODO: this needs to be it's own page
+export default function ProjectPlan({ data, loading }: ProjectPlanProps) {
+    const [taskOpen, setTaskOpen] = useState(-1);
+
+    const items = descriptionPropsFromProjectPlan(data);
     const modalHandleClose = () => {
         setTaskOpen(-1);
     };

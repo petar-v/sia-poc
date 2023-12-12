@@ -3,7 +3,8 @@ import { createChatSession as dummyChatSession } from "./dummy";
 import { createChatSession as openAiChatSession } from "./openai";
 
 export type Backend = "openai" | "dummy";
-export const DEFAULT_BACKEND: Backend = "openai";
+export const DEFAULT_BACKEND: Backend = "dummy";
+// FIXME: load default backend from env
 
 type BackendBase = {
     name: Backend;

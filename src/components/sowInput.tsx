@@ -9,6 +9,7 @@ type FieldType = {
     statementOfWork: string;
 };
 
+// TODO: this needs to be it's own page
 export default function SoWInput({ onSubmit }: SoWInputProps) {
     const submitSoW = (formValues: FieldType) => {
         onSubmit(formValues.statementOfWork);
