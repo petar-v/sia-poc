@@ -1,7 +1,7 @@
 import React from "react";
 import { ConfigProvider, Result, Divider, List, Checkbox } from "antd";
 
-import ReloadButton from "@/components/reloadButton";
+import ReloadButton from "@/components/elements/reloadButton";
 
 import { Issue } from "@/lib/projectData";
 

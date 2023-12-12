@@ -2,6 +2,7 @@ import OpenAI from "openai";
 
 import promptContext from "./promptText.txt";
 import { ChatSession, Message } from "../chatSession";
+import { v4 as uuidv4 } from "uuid";
 
 const model = "gpt-3.5-turbo";
 
@@ -20,7 +21,7 @@ export function createChatSession(
         messages: history.map((h) => ({
             ...h,
             role: h.role === "user" ? "user" : "assistant",
-            name: "",
+            name: uuidv4(),
         })), // TODO: make message type conversion helpers
         stream: true,
         model,
@@ -69,7 +70,9 @@ export function createChatSession(
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) {
-                        controller.enqueue(JSON.parse(buffer));
+                        try {
+                            controller.enqueue(JSON.parse(buffer));
+                        } catch (e) {}
                         break;
                     }
 

@@ -4,6 +4,7 @@ import { createChatSession as openAiChatSession } from "./openai";
 
 export type Backend = "openai" | "dummy";
 export const DEFAULT_BACKEND: Backend = "openai";
+// FIXME: load default backend from env
 
 type BackendBase = {
     name: Backend;
@@ -21,7 +22,7 @@ export interface DummyBackend extends BackendBase {
 
 export const options: { value: Backend; label: string }[] = [
     { value: "openai", label: "ChatGPT 3.5 Turbo" },
-    { value: "dummy", label: "Dummy offline data" },
+    { value: "dummy", label: "Dummy hardcoded robot" },
 ];
 
 export const createChatSessionFromBackend = (

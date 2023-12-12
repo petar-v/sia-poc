@@ -7,7 +7,7 @@ import { ReloadOutlined } from "@ant-design/icons";
 
 import { selectBackendState, setBackend } from "@/redux/store/backendSlice";
 
-import Header from "@/components/header";
+import Header from "@/components/elements/header";
 import Wizard from "@/components/wizard";
 
 import { DEFAULT_BACKEND, options } from "@/llm-backend/backend";
