@@ -60,6 +60,7 @@ function createChatSession(apiKey: string, orgKey: string): ChatSession {
                 while (true) {
                     const { done, value } = await reader.read();
                     if (done) {
+                        controller.enqueue(JSON.parse(buffer));
                         break;
                     }
 
@@ -79,7 +80,6 @@ function createChatSession(apiKey: string, orgKey: string): ChatSession {
                             controller.enqueue(JSON.parse(jsonStringLine));
                         });
                 }
-                controller.enqueue(JSON.parse(buffer));
                 controller.close();
             },
             cancel() {

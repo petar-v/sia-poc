@@ -31,7 +31,7 @@ const chatSessions: { [key: string]: ChatSession } = {};
 const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     // TODO: recreate the server in dev env
     if (res.socket.server.io) {
-        console.log("Socket is already running.");
+        // console.log("Socket is already running.");
         res.end();
         return;
     }
@@ -77,19 +77,19 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
                 }
                 socket.emit("reply", value);
             }
+            socket.emit("done", "reply");
         });
         socket.on("sow", async (sow) => {
             const stream = await chatSession.statementOfWorkToProjectPlan(sow);
             const reader = stream.getReader();
             while (true) {
                 const { done, value } = await reader.read();
-                console.log("EMISSION", value, done);
-                console.log("");
                 if (done) {
                     break;
                 }
                 socket.emit("project-plan", value);
             }
+            socket.emit("done", "project-plan");
         });
         // TODO: kill the chatgpt session once the user destroys the session.
     });

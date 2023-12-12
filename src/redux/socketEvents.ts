@@ -2,6 +2,7 @@ import { SocketType } from "@/lib/socket";
 import { AppStore } from "./store";
 import {
     selectProjectPlan,
+    setAwaitingProjectPlan,
     setIssue,
     setProjectPlan,
 } from "./store/projectSlice";
@@ -11,6 +12,11 @@ export const hookUpSocketEventsToStore = (
     { dispatch, getState }: AppStore,
     socket: SocketType,
 ) => {
+    socket.on("done", (process: string) => {
+        if (process === "project-plan") {
+            dispatch(setAwaitingProjectPlan(false));
+        }
+    });
     socket.on("project-plan", (json: any) => {
         const state = getState();
         const projectPlan = selectProjectPlan(state) || {

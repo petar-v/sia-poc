@@ -45,7 +45,7 @@ export const initializeSocket = createAsyncThunk<void, SessionData, ThunkApi>(
         dispatch(setAuth(session));
         socket.on("connect", () => {
             dispatch(setConnected(true));
-            console.log("connected to via redux", session.id);
+            console.log("connected to the socket via redux", session.id);
         });
         socket.on("disconnect", () => {
             dispatch(setConnected(false));

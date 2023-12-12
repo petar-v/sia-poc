@@ -4,14 +4,14 @@ import ProjectData, { Issue } from "@/lib/projectData";
 
 export interface ProjectState {
     statementOfWork: string | null;
-    awaitingBackend: boolean;
+    awaitingProjectPlan: boolean;
     projectPlan: ProjectData | null;
     issue: Issue | null;
 }
 
 const initialState: ProjectState = {
     statementOfWork: null,
-    awaitingBackend: false,
+    awaitingProjectPlan: false,
     projectPlan: null,
     issue: null,
 };
@@ -38,32 +38,36 @@ export const projectSlice = createSlice({
         setIssue(state, action) {
             state.issue = action.payload;
         },
+        setAwaitingProjectPlan(state, action) {
+            state.awaitingProjectPlan = action.payload;
+        },
     },
     // TODO: add error handling
     extraReducers(builder) {
         builder
             .addCase(setStatementOfWork.pending, (state, action) => {
-                state.awaitingBackend = true;
                 return state;
             })
             .addCase(setStatementOfWork.fulfilled, (state, action) => {
-                state.awaitingBackend = false;
                 return state;
             })
             .addCase(setStatementOfWork.rejected, (state, action) => {
                 console.error(action.error.message);
+                return state;
             });
     },
 });
 
 const { setSoW } = projectSlice.actions;
 
-export const { setProjectPlan, setIssue } = projectSlice.actions;
+export const { setProjectPlan, setIssue, setAwaitingProjectPlan } =
+    projectSlice.actions;
 
 export const setStatementOfWork = createAsyncThunk<void, string, ThunkApi>(
     "project/setSoW",
     async (sow: string, thunkAPI) => {
         thunkAPI.dispatch(setSoW(sow));
+        thunkAPI.dispatch(setAwaitingProjectPlan(true));
         thunkAPI.extra.emit("sow", sow);
     },
 );
@@ -77,14 +81,14 @@ export const selectProjectPlan = (state: AppState) =>
 export const selectIssue = (state: AppState) => state[projectSlice.name].issue;
 
 export const selectProjectStage = (state: AppState): ProjectStage => {
-    const { statementOfWork, awaitingBackend, projectPlan, issue } =
+    const { statementOfWork, awaitingProjectPlan, projectPlan, issue } =
         state[projectSlice.name];
 
     if (issue) return ProjectStage.ISSUES;
 
     if (!projectPlan && !statementOfWork) return ProjectStage.INITIAL;
 
-    if (projectPlan && !awaitingBackend) return ProjectStage.COMPLETED;
+    if (projectPlan && !awaitingProjectPlan) return ProjectStage.COMPLETED;
 
     if (statementOfWork) return ProjectStage.PROCESSING;
 
