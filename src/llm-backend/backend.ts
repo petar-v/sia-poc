@@ -1,5 +1,3 @@
-import { prompt as dummy } from "./dummy";
-
 export type backend = "openai" | "dummy";
 export const DEFAULT_BACKEND = "openai";
 
