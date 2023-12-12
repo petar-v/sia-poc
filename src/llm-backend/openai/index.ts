@@ -5,13 +5,12 @@ import { ChatSession } from "../chatSession";
 
 const model = "gpt-3.5-turbo";
 
-function createChatSession(apiKey: string, orgKey: string): ChatSession {
+export function createChatSession(apiKey: string, orgKey: string): ChatSession {
     const openai = new OpenAI({
         apiKey: apiKey,
         organization: orgKey,
         dangerouslyAllowBrowser: true,
     });
-
     const params: OpenAI.Chat.ChatCompletionCreateParams = {
         messages: [],
         stream: true,
@@ -32,10 +31,17 @@ function createChatSession(apiKey: string, orgKey: string): ChatSession {
                     })
                     .on("chatCompletion", () => {
                         controller.close();
+                    })
+                    .on("message", (message) => {
+                        params.messages.push(message);
                     });
             },
             cancel() {
                 chatGPTStream.abort();
+                params.messages.push({
+                    role: "assistant",
+                    content: "Aborted message.",
+                });
             },
         });
     };
@@ -83,9 +89,18 @@ function createChatSession(apiKey: string, orgKey: string): ChatSession {
     };
 
     return {
+        getMessages: () =>
+            params.messages.map((msg) => ({
+                role: msg.role,
+                content: ((content) => {
+                    if (!content) return "";
+                    if (typeof content === "string") {
+                        return content;
+                    }
+                    return "Unparsable message."; // FIXME: figure out how to serialize the ChatCompletionPart[]
+                })(msg.content),
+            })),
         prompt,
         statementOfWorkToProjectPlan,
     };
 }
-
-export default createChatSession;

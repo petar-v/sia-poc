@@ -5,7 +5,9 @@ import type { Server as IOServer, Socket } from "socket.io";
 import { Server } from "socket.io";
 
 import { SessionData } from "@/lib/session";
-import createChatSession, { ChatSession } from "@/llm-backend/openai";
+import { ChatSession } from "@/llm-backend/chatSession";
+import { createChatSessionFromBackend } from "@/llm-backend/backend";
+import { DummyBackend, OpenAIBackend } from "../../llm-backend/backend";
 
 interface SocketServer extends HTTPServer {
     io?: IOServer | undefined;
@@ -22,10 +24,16 @@ interface NextApiResponseWithSocket extends NextApiResponse {
 const openAIkey = process.env.OPENAI_API_KEY || "";
 const openAIorg = process.env.OPENAI_ORG_ID || "";
 
+const dummyBackend: DummyBackend = { name: "dummy" };
+const openAiBackend: OpenAIBackend = {
+    name: "openai",
+    apiKey: openAIkey,
+    orgKey: openAIorg,
+};
+
 // TODO: this whole thing should get migrated to NestJS or something else. Next.js is unable to do the backend session handling I need.
 
 const getSessionData = (socket: Socket) => socket.handshake.auth as SessionData;
-
 const chatSessions: { [key: string]: ChatSession } = {};
 
 const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
@@ -63,7 +71,8 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
 
         // TODO: create session based on preferred backend
         if (chatSessions[sessionID] === undefined) {
-            chatSessions[sessionID] = createChatSession(openAIkey, openAIorg);
+            chatSessions[sessionID] =
+                createChatSessionFromBackend(dummyBackend);
         }
         const chatSession = chatSessions[sessionID];
         // TODO: add constants for the events
