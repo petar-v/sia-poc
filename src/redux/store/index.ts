@@ -5,7 +5,8 @@ import { combineReducers } from "@reduxjs/toolkit";
 import backendReducer from "./backendSlice";
 import projectReducer from "./projectSlice";
 import socketReducer from "./socketSlice";
-import { createSocket } from "@/lib/socket";
+import { SocketType, createSocket } from "@/lib/socket";
+import { hookUpSocketEventsToStore } from "../socketEvents";
 
 const combinedReducer = combineReducers({
     backend: backendReducer,
@@ -38,11 +39,9 @@ const makeStore = () => {
                 serializableCheck: false,
             }),
     });
-
+    hookUpSocketEventsToStore(store, socket);
     return store;
 };
-
-type SocketType = ReturnType<typeof createSocket>;
 
 // Infer the type of makeStore
 export type AppStore = ReturnType<typeof makeStore>;

@@ -10,3 +10,5 @@ export const createSocket = () =>
 // This method pings the socket endpoint that bootstraps
 // the websocket.
 export const bumpServer = async () => await fetch("/api/socket");
+
+export type SocketType = ReturnType<typeof createSocket>;
