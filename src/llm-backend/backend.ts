@@ -22,7 +22,7 @@ export interface DummyBackend extends BackendBase {
 
 export const options: { value: Backend; label: string }[] = [
     { value: "openai", label: "ChatGPT 3.5 Turbo" },
-    { value: "dummy", label: "Dummy offline data" },
+    { value: "dummy", label: "Dummy hardcoded robot" },
 ];
 
 export const createChatSessionFromBackend = (
