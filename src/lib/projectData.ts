@@ -1,3 +1,4 @@
+// Note: remember to update the bot prompts if this changes
 export type Task = {
     title: string;
     desc: string;
@@ -22,8 +23,6 @@ type ProjectData = {
     tasks: Task[];
     info?: ProjectInfo;
 };
-
-export type LLMReply = ProjectData | Issue;
 
 // FIXME: import this as a string to the model prompt
 

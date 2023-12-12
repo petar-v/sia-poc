@@ -1,13 +1,7 @@
 import OpenAI from "openai";
 
 import promptContext from "./promptText.txt";
-
-export type ChatSession = {
-    prompt: (prompt: string) => Promise<ReadableStream<string>>;
-    statementOfWorkToProjectPlan: (
-        statementOfWork: string,
-    ) => Promise<ReadableStream<string>>;
-};
+import { ChatSession } from "../chatSession";
 
 const model = "gpt-3.5-turbo";
 
