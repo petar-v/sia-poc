@@ -1,4 +1,9 @@
 import React from "react";
+
+import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+// import rehypeRaw from 'rehype-raw';
+
 import { Button, Input, Form, Space, Card, Avatar } from "antd";
 import { SendOutlined, UserOutlined, RobotOutlined } from "@ant-design/icons";
 
@@ -44,13 +49,12 @@ function MessageDisplay({ message }: { message: ChatMessage }) {
                 : DummyAIAvatar
             : UserAvatar;
 
+    const content = (
+        <Markdown remarkPlugins={[remarkGfm]}>{message.content}</Markdown>
+    );
     return (
         <Card bordered={true} size="small" style={{ width: "100%" }}>
-            <Card.Meta
-                avatar={avatar}
-                title={title}
-                description={message.content}
-            />
+            <Card.Meta avatar={avatar} title={title} description={content} />
         </Card>
     );
 }
@@ -101,8 +105,11 @@ export default function Chat({ disabled }: ChatProps) {
                         type="primary"
                         icon={<SendOutlined />}
                         htmlType="submit"
+                        loading={isAwaitingReply}
                     >
-                        Send
+                        {isAwaitingReply
+                            ? "The AI is talking, shush!"
+                            : "Send message"}
                     </Button>
                 </Form.Item>
             </Form>
