@@ -15,6 +15,10 @@ const nextConfig = {
             test: /\.txt$/i,
             loader: "raw-loader",
         });
+        config.module.rules.push({
+            test: /\.ndjson$/i,
+            loader: "raw-loader",
+        });
 
         return config;
     },
