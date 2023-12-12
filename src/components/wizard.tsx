@@ -7,7 +7,7 @@ import {
     selectProjectStage,
     ProjectStage,
     selectIssue,
-    setSoW,
+    setStatementOfWork,
 } from "@/redux/store/projectSlice";
 
 import SoWInput from "@/components/sowInput";
@@ -26,10 +26,9 @@ const Wizard = () => {
     const projectStage = useAppSelector(selectProjectStage);
 
     const onSubmit = (sow: string) => {
-        dispatch(setSoW(sow)).then(() => {
-            console.log("SOW dispatched");
+        dispatch(setStatementOfWork(sow)).then(() => {
+            window.scrollTo(0, 0);
         });
-        window.scrollTo(0, 0);
     };
 
     const view = () => {

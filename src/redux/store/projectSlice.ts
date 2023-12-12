@@ -29,7 +29,7 @@ export const projectSlice = createSlice({
     initialState,
     reducers: {
         // TODO: add type check for the action
-        setStatementOfWork(state, action) {
+        setSoW(state, action) {
             state.statementOfWork = action.payload;
         },
         setProjectPlan(state, action) {
@@ -39,37 +39,32 @@ export const projectSlice = createSlice({
             state.issue = action.payload;
         },
     },
+    // TODO: add error handling
     extraReducers(builder) {
         builder
-            .addCase(setSoW.pending, (state, action) => {
+            .addCase(setStatementOfWork.pending, (state, action) => {
                 state.awaitingBackend = true;
                 return state;
             })
-            .addCase(setSoW.fulfilled, (state, action) => {
+            .addCase(setStatementOfWork.fulfilled, (state, action) => {
                 state.awaitingBackend = false;
                 return state;
             })
-            .addCase(setSoW.rejected, (state, action) => {
+            .addCase(setStatementOfWork.rejected, (state, action) => {
                 console.error(action.error.message);
             });
     },
 });
 
-const { setStatementOfWork } = projectSlice.actions;
+const { setSoW } = projectSlice.actions;
 
 export const { setProjectPlan, setIssue } = projectSlice.actions;
 
-export const setSoW = createAsyncThunk<void, string, ThunkApi>(
+export const setStatementOfWork = createAsyncThunk<void, string, ThunkApi>(
     "project/setSoW",
     async (sow: string, thunkAPI) => {
-        thunkAPI.dispatch(setStatementOfWork(sow));
-
-        const socket = thunkAPI.extra;
-        console.log("PROMPT SOW");
-        socket.emit("sow", sow);
-        socket.on("project-plan", (value) => {
-            console.log("RECEIVED PP", value);
-        });
+        thunkAPI.dispatch(setSoW(sow));
+        thunkAPI.extra.emit("sow", sow);
     },
 );
 

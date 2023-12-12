@@ -61,6 +61,7 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
         console.log("New Connection with session", sessionID);
         socket.join(sessionID);
 
+        // TODO: create session based on preferred backend
         if (chatSessions[sessionID] === undefined) {
             chatSessions[sessionID] = createChatSession(openAIkey, openAIorg);
         }

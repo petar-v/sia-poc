@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-import promptContext from "../promptText.txt";
+import promptContext from "./promptText.txt";
 
 export type ChatSession = {
     prompt: (prompt: string) => Promise<ReadableStream<string>>;
