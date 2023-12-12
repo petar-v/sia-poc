@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ProjectData from "@/lib/projectData";
 
-import { Card, Space, Descriptions, Modal, Skeleton, Typography } from "antd";
+import { Card, Space, Descriptions, Modal, Skeleton, Divider } from "antd";
 import type { DescriptionsProps } from "antd";
 
 export type ProjectPlanProps = {
@@ -47,40 +47,47 @@ export default function ProjectPlan({ data, loading }: ProjectPlanProps) {
         <>
             <div className="mb-3">
                 {data.info && (
-                    <Descriptions title="Project Details" items={items} />
+                    <Descriptions
+                        title={
+                            <Divider orientation="left">
+                                Project Details
+                            </Divider>
+                        }
+                        items={items}
+                    />
                 )}
                 {!data.info && (
                     <Skeleton active round paragraph loading={loading} />
                 )}
             </div>
             <>
-                <Typography.Title level={5}>Project Breakdown</Typography.Title>
+                <Divider orientation="left">Project Breakdown</Divider>
                 <Space className="flex flex-wrap">
                     {data.tasks.map((task, i) => (
-                        <div key={`taskC-${i}`}>
-                            <Card
-                                hoverable
-                                key={`task-${i}`}
-                                title={task.title}
-                                extra={<small>{task.timeEst} days</small>}
-                                style={{ width: 300 }}
-                                onClick={() => setTaskOpen(i)}
-                            >
-                                <p>{task.desc}</p>
-                            </Card>
-                            <Modal
-                                key={`modal-${i}`}
-                                title={task.title}
-                                footer={null}
-                                open={taskOpen === i}
-                                onOk={modalHandleClose}
-                                onCancel={modalHandleClose}
-                            >
-                                {task.details.split("\n").map((p, i) => (
-                                    <p key={`p-${i}`}>{p}</p>
-                                ))}
-                            </Modal>
-                        </div>
+                        <Card
+                            hoverable
+                            key={`task-${i}`}
+                            title={task.title}
+                            extra={<small>{task.timeEst} days</small>}
+                            style={{ width: 300 }}
+                            onClick={() => setTaskOpen(i)}
+                        >
+                            <p>{task.desc}</p>
+                        </Card>
+                    ))}
+                    {data.tasks.map((task, i) => (
+                        <Modal
+                            key={`modal-${i}`}
+                            title={task.title}
+                            footer={null}
+                            open={taskOpen === i}
+                            onOk={modalHandleClose}
+                            onCancel={modalHandleClose}
+                        >
+                            {task.details.split("\n").map((p, i) => (
+                                <p key={`p-${i}`}>{p}</p>
+                            ))}
+                        </Modal>
                     ))}
                     {loading && (
                         <Card

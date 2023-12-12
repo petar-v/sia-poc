@@ -45,8 +45,8 @@ const Wizard = () => {
                         data={projectPlan}
                         loading={projectStage === ProjectStage.PROCESSING}
                     />
-                    {/* <Divider orientation="left">Ask SIA</Divider>
-                    <Chat disabled={projectStage === ProjectStage.PROCESSING} /> */}
+                    <Divider orientation="left">Ask SIA</Divider>
+                    <Chat disabled={projectStage === ProjectStage.PROCESSING} />
                 </>
             );
         }

@@ -5,6 +5,8 @@ import { combineReducers } from "@reduxjs/toolkit";
 import backendReducer from "./backendSlice";
 import projectReducer from "./projectSlice";
 import socketReducer from "./socketSlice";
+import messagesReducer from "./messagesSlice";
+
 import { SocketType, createSocket } from "@/lib/socket";
 import { hookUpSocketEventsToStore } from "../socketEvents";
 
@@ -12,6 +14,7 @@ const combinedReducer = combineReducers({
     backend: backendReducer,
     project: projectReducer,
     socket: socketReducer,
+    messages: messagesReducer,
 });
 
 const reducer: typeof combinedReducer = (state, action) => {
